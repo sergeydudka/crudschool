@@ -16,10 +16,6 @@
     },
     "autoload": {
         "psr-4": {
-            "crudschool\\api\\": "api",
-            "crudschool\\interfaces\\": "interfaces",
-            "crudschool\\modules\\": "modules",
-            "crudschool\\models\\": "models",
             "crudschool": ""
         }
     },
