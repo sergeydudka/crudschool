@@ -17,6 +17,7 @@
     "autoload": {
         "psr-4": {
             "crudschool\\api\\": "api",
+            "crudschool\\behaviors\\": "behaviors",
             "crudschool\\interfaces\\": "interfaces",
             "crudschool\\modules\\": "modules",
             "crudschool\\models\\": "models",

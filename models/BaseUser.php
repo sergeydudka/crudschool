@@ -1,9 +1,9 @@
 <?php
-namespace common\models;
+namespace crudschool\models;
 
 use Yii;
 use yii\base\NotSupportedException;
-use common\behaviors\TimestampBehavior;
+use crudschool\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 

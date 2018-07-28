@@ -6,10 +6,10 @@
  * Time: 13:14
  */
 
-namespace common\models;
+namespace crudschool\models\;
 
 
-use common\interfaces\RelationshipInteface;
+use crudschool\interfaces\RelationshipInteface;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 

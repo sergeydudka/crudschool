@@ -1,6 +1,6 @@
 <?php
 
-namespace crudschool;
+namespace crudschool\bootstrap;
 
 use yii\base\Application;
 use yii\base\BootstrapInterface;
