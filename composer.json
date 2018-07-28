@@ -1,6 +1,6 @@
 {
     "name": "crudschool/yii2-school",
-    "description": "test",
+    "description": "Modules for site school",
     "type": "yii2-extension",
     "keywords": ["yii2","extension"],
     "license": "MIT",
@@ -23,6 +23,6 @@
         }
     },
     "extra": {
-        "bootstrap": "crudschool\\Bootstrap"
+        "bootstrap": "crudschool\\yii2-school\\Bootstrap"
     }
 }
