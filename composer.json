@@ -19,10 +19,11 @@
             "crudschool\\api\\": "api",
             "crudschool\\interfaces\\": "interfaces",
             "crudschool\\modules\\": "modules",
-            "crudschool\\models\\": "models"
+            "crudschool\\models\\": "models",
+            "crudschool\\": "",
         }
     },
     "extra": {
-        "bootstrap": "crudschool\\yii2-school\\Bootstrap"
+        "bootstrap": "crudschool\\Bootstrap"
     }
 }
