@@ -20,7 +20,7 @@
             "crudschool\\interfaces\\": "interfaces",
             "crudschool\\modules\\": "modules",
             "crudschool\\models\\": "models",
-            "crudschool\\": "",
+            "crudschool": ""
         }
     },
     "extra": {
