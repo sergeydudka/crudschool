@@ -16,10 +16,14 @@
     },
     "autoload": {
         "psr-4": {
-            "crudschool": ""
+            "crudschool\\api\\": "api",
+            "crudschool\\interfaces\\": "interfaces",
+            "crudschool\\modules\\": "modules",
+            "crudschool\\models\\": "models",
+            "crudschool\\bootstrap\\": ""
         }
     },
     "extra": {
-        "bootstrap": "crudschool\\Bootstrap"
+        "bootstrap": "crudschool\\bootstrap\\Bootstrap"
     }
 }
