@@ -1,0 +1,28 @@
+{
+    "name": "crudschool/yii2-school",
+    "description": "test",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Sergey Dudka",
+            "email": "sergey.dudka@urk.net"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "crudschool\\api\\": "api",
+            "crudschool\\interfaces\\": "interfaces",
+            "crudschool\\modules\\": "modules",
+            "crudschool\\models\\": "models",
+        }
+    },
+    "extra": {
+        "bootstrap": "crudschool\\Bootstrap"
+    }
+}
