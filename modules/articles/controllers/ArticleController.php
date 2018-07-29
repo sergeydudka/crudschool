@@ -3,9 +3,9 @@
 namespace crudschool\modules\articles\controllers;
 
 use Yii;
-use modules\articles\models\Article;
+use crudschool\modules\articles\models\Article;
 use yii\data\ActiveDataProvider;
-use common\classes\ApiController;
+use crudschool\api\ApiController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 

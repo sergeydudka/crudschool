@@ -2,12 +2,12 @@
 
 namespace crudschool\modules\articles\models;
 
-use common\behaviors\AliasBehavior;
-use common\behaviors\HTMLEncodeBehavior;
-use common\behaviors\TimestampBehavior;
-use common\models\RelationshipModel;
-use modules\languages\models\Language;
-use \common\behaviors\BlameableBehavior;
+use crudschool\behaviors\AliasBehavior;
+use crudschool\behaviors\HTMLEncodeBehavior;
+use crudschool\behaviors\TimestampBehavior;
+use crudschool\models\RelationshipModel;
+use crudschool\modules\languages\models\Language;
+use crudschool\behaviors\BlameableBehavior;
 
 /**
  * This is the model class for table "article".

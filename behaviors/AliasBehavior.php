@@ -9,7 +9,7 @@
 namespace crudschool\behaviors;
 
 
-use crudschool\alias\models\Alias;
+use crudschool\modules\alias\models\Alias;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;

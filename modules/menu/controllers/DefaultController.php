@@ -2,7 +2,7 @@
 
 namespace crudschool\modules\menu\controllers;
 
-use common\classes\ApiController;
+use crudschool\api\ApiController;
 
 /**
  * Default controller for the `adminmenu` module

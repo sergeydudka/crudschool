@@ -20,7 +20,7 @@ class Bootstrap implements BootstrapInterface {
 	 */
 	public function bootstrap($app) {
 		foreach ($this->moduleList as $module) {
-			$app->setModule($module, ['class' => 'crudschool\modules\\' . $module . '\Module']);
+			$app->setModule($module, ['class' => 'crudschool\\modules\\' . $module . '\\Module']);
 		}
 	}
 }

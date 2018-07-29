@@ -6,7 +6,7 @@
  * Time: 13:17
  */
 
-namespace common\interfaces;
+namespace crudschool\interfaces;
 
 interface RelationshipInteface {
 	const RELATION_HAS_ONE = 1;

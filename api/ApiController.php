@@ -6,7 +6,7 @@
  * Time: 11:02
  */
 
-namespace common\classes;
+namespace crudschool\api;
 
 use yii\rest\ActiveController;
 use yii\web\Response;

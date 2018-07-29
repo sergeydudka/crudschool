@@ -6,7 +6,7 @@
  * Time: 18:34
  */
 
-namespace common\classes;
+namespace crudschool\api;
 
 
 use yii\base\BaseObject;

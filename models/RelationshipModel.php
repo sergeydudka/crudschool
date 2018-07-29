@@ -6,7 +6,7 @@
  * Time: 13:14
  */
 
-namespace crudschool\models\;
+namespace crudschool\models;
 
 
 use crudschool\interfaces\RelationshipInteface;

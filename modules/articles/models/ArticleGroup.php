@@ -2,10 +2,10 @@
 
 namespace crudschool\modules\articles\models;
 
-use common\behaviors\HTMLEncodeBehavior;
-use common\behaviors\TimestampBehavior;
-use common\models\RelationshipModel;
-use common\behaviors\BlameableBehavior;
+use crudschool\behaviors\HTMLEncodeBehavior;
+use crudschool\behaviors\TimestampBehavior;
+use crudschool\models\RelationshipModel;
+use crudschool\behaviors\BlameableBehavior;
 use yii\helpers\ArrayHelper;
 
 /**

@@ -6,7 +6,7 @@
  * Time: 21:49
  */
 
-namespace common\behaviors;
+namespace crudschool\behaviors;
 
 
 use yii\base\Behavior;

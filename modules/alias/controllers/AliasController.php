@@ -5,7 +5,7 @@ namespace crudschool\modules\alias\controllers;
 use Yii;
 use modules\alias\models\Alias;
 use yii\data\ActiveDataProvider;
-use common\classes\ApiController;
+use crudschool\api\ApiController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 

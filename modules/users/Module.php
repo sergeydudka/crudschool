@@ -9,5 +9,6 @@ class Module extends \yii\base\Module {
 	/**
 	 * {@inheritdoc}
 	 */
-	public $controllerNamespace = 'modules\users\controllers';
+	public $controllerNamespace = 'crudschool\modules\users\controllers';
+	public $defaultRoute = 'user';
 }

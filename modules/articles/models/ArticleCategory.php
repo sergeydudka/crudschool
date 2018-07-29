@@ -2,13 +2,13 @@
 
 namespace crudschool\modules\articles\models;
 
-use common\behaviors\HTMLEncodeBehavior;
-use common\behaviors\TimestampBehavior;
-use common\models\RelationshipModel;
-use modules\users\models\User;
-use \common\behaviors\BlameableBehavior;
+use crudschool\behaviors\HTMLEncodeBehavior;
+use crudschool\behaviors\TimestampBehavior;
+use crudschool\behaviors\BlameableBehavior;
+use crudschool\behaviors\AliasBehavior;
+use crudschool\models\RelationshipModel;
+use crudschool\modules\users\models\User;
 use yii\helpers\ArrayHelper;
-use common\behaviors\AliasBehavior;
 
 /**
  * This is the model class for table "article_category".

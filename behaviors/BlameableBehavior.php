@@ -9,7 +9,7 @@
 namespace crudschool\behaviors;
 
 
-use crudschool\users\models\User;
+use crudschool\modules\users\models\User;
 use yii\db\ActiveRecord;
 
 class BlameableBehavior extends \yii\behaviors\BlameableBehavior {
