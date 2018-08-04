@@ -6,7 +6,7 @@
  * Time: 18:38
  */
 
-namespace \crudschool\common\url;
+namespace crudschool\common\url;
 
 class Request extends \yii\web\Request {
 	protected function resolvePathInfo() {
