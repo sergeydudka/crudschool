@@ -50,6 +50,11 @@ class DefaultController extends ApiController {
 	private function getControllers($module_id, $controllerNamespace) {
 		$realPath = realpath(\Yii::$app->basePath . '/../' . DIRECTORY_SEPARATOR . $controllerNamespace);
 		$result = [];
+		
+		if (empty($realPath)) {
+			return $result;
+		}
+		
 		foreach (scandir($realPath) as $fileName) {
 			if ($fileName == '.' || $fileName == '..') {
 				continue;

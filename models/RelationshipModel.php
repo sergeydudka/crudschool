@@ -21,6 +21,10 @@ abstract class RelationshipModel extends ActiveRecord implements RelationshipInt
 	public function afterFind() {
 		parent::afterFind();
 		
+		if (\Yii::$app->id != 'backend') {
+			return;
+		}
+		
 		$class = get_called_class();
 		
 		if ($class != \Yii::$app->controller->modelClass) {
