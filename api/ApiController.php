@@ -8,11 +8,12 @@
 
 namespace crudschool\api;
 
+use crudschool\modules\languages\helpers\SystemLanguage;
 use yii\rest\ActiveController;
 use yii\web\Response;
 
 
-abstract class ApiController extends ActiveController {
+abstract class ApiController extends BaseApiController {
 	public $user;
 	
 	/**
@@ -28,7 +29,6 @@ abstract class ApiController extends ActiveController {
 		//}
 		
 		parent::__construct($id, $module, $config);
-		
 		$this->user = \Yii::$app->getUser()->getIdentity();
 	}
 	
@@ -41,13 +41,7 @@ abstract class ApiController extends ActiveController {
 		return parent::afterAction($action, $response);
 	}
 	
-	/*public function checkAccess($action, $model = null, $params = []) {
-		parent::checkAccess($action, $model, $params);
-	}*/
+	//public function checkAccess($action, $model = null, $params = []) {
+	//	parent::checkAccess($action, $model, $params);
+	//}
 }
-
-/*class ApiController extends Controller {
-	public function afterAction ($action, $result) {
-		return parent::afterAction($action, $result);
-	}
-}*/

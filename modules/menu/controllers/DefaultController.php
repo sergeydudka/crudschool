@@ -26,14 +26,14 @@ class DefaultController extends ApiController {
 	
 	public function prepareDataProvider() {
 		$result = [];
-		foreach (\Yii::$app->modules as $id => $module) {
+		foreach (\Yii::$app->getModules() as $id => $module) {
 			if ($id == $this->module->id || $id == 'debug' || $id == 'gii') {
 				continue;
 			}
+			$module = $this->createClass($module);
+			$class = new \ReflectionClass($module);
 			
-			$class = $this->createClass($module);
-			
-			$result[$id] = $this->getControllers($id, $class->controllerNamespace);
+			$result[$id] = $this->getControllers($id, $module->controllerNamespace,  $class->getFileName());
 		}
 		
 		return $result;
@@ -47,8 +47,8 @@ class DefaultController extends ApiController {
 		return is_object($module) ? $module : new $module['class']([]);
 	}
 	
-	private function getControllers($module_id, $controllerNamespace) {
-		$realPath = realpath(\Yii::$app->basePath . '/../' . DIRECTORY_SEPARATOR . $controllerNamespace);
+	private function getControllers($module_id, $controllerNamespace, $path) {
+		$realPath = realpath(dirname($path) . DIRECTORY_SEPARATOR . 'controllers');
 		$result = [];
 		
 		if (empty($realPath)) {
@@ -71,7 +71,6 @@ class DefaultController extends ApiController {
 				'class' => $class,
 				'url' => '/' . $module_id . '/' . $name,
 				'label' => '',
-				'actions' => $controller->actions(),
 			];
 		}
 		return $result;

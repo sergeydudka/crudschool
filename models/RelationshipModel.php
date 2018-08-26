@@ -12,6 +12,7 @@ namespace crudschool\models;
 use crudschool\interfaces\RelationshipInteface;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
+use yii\rest\ActiveController;
 
 abstract class RelationshipModel extends ActiveRecord implements RelationshipInteface {
 	public function init() {
@@ -21,7 +22,7 @@ abstract class RelationshipModel extends ActiveRecord implements RelationshipInt
 	public function afterFind() {
 		parent::afterFind();
 		
-		if (\Yii::$app->id != 'backend') {
+		if (\Yii::$app->id != 'backend' || !(\Yii::$app->controller instanceof ActiveController)) {
 			return;
 		}
 		

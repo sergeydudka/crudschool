@@ -21,6 +21,7 @@ use yii\helpers\ArrayHelper;
  * @property int $created_by
  * @property int $updated_by
  * @property int $difficult_id
+ * @property int $alias_id
  */
 class ArticleCategory extends RelationshipModel {
 	/**
@@ -45,8 +46,9 @@ class ArticleCategory extends RelationshipModel {
 				'class' => BlameableBehavior::class,
 			],
 			AliasBehavior::class => [
-				'class' => AliasBehavior::class
-			]
+				'class' => AliasBehavior::class,
+				'from' => 'title'
+			],
 		];
 	}
 	
@@ -57,7 +59,7 @@ class ArticleCategory extends RelationshipModel {
 		return [
 			[['description'], 'string'],
 			[['created_at', 'updated_at'], 'safe'],
-			[['created_by', 'updated_by'], 'integer'],
+			[['created_by', 'updated_by', 'alias_id'], 'integer'],
 			[['title'], 'string', 'max' => 256],
 		];
 	}
@@ -74,6 +76,7 @@ class ArticleCategory extends RelationshipModel {
 			'updated_at' => 'Updated At',
 			'created_by' => 'Created By',
 			'updated_by' => 'Updated By',
+			'alias_id' => 'Alias',
 		];
 	}
 	

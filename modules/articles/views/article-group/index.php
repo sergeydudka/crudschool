@@ -66,6 +66,13 @@ $this->params['breadcrumbs'][] = $this->title;
 			        return $model->difficult->title;
 		        }
 	        ],
+	
+	        [
+		        'attribute' => 'alias_id',
+		        'value' => function ($model) {
+			        return $model->getAlias();
+		        }
+	        ],
             
 
             ['class' => 'yii\grid\ActionColumn'],

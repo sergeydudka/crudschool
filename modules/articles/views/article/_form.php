@@ -20,18 +20,19 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'status')->dropDownList([ 'disabled' => 'Disabled', 'published' => 'Published', 'waiting' => 'Waiting']) ?>
 
     <?= $form->field($model, 'article_group_id')
-	    ->dropDownList(\modules\articles\models\ArticleGroup::getDropdown(), ['prompt' => '-----']); ?>
+	    ->dropDownList(\crudschool\modules\articles\models\ArticleGroup::getDropdown(), ['prompt' => '-----']); ?>
 	
 	<?= $form->field($model, 'difficult_id')
-		->dropDownList(\modules\articles\models\Difficult::getDropdown(\modules\articles\models\Difficult::TYPE_ARTICLE_DIFFICULT), ['prompt' => '-----']); ?>
+		->dropDownList(\crudschool\modules\articles\models\Difficult::getDropdown(\crudschool\modules\articles\models\Difficult::TYPE_ARTICLE_DIFFICULT), ['prompt' => '-----']); ?>
 	
-	<?= $form->field($model, 'difficult_id')
-		->dropDownList(\modules\languages\models\Language::getDropdown(), ['prompt' => '-----']); ?>
+	<?= $form->field($model, 'language_id')
+		->dropDownList(\crudschool\modules\languages\models\Language::getDropdown(), []); ?>
+	
+	<?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>

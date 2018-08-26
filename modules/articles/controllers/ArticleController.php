@@ -38,6 +38,14 @@ class ArticleController extends ApiController {
 			'query' => Article::find(),
 		]);
 		
+		$page = Yii::$app->request->get('page');
+		
+		if ($page) {
+			Yii::$app->session->set(self::class . '_page', $page);
+		} else {
+			Yii::$app->session->set(self::class . '_page', 1);
+		}
+		
 		return $this->render('index', [
 			'dataProvider' => $dataProvider,
 		]);
@@ -64,7 +72,7 @@ class ArticleController extends ApiController {
 		$model = new Article();
 		
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			$page = Yii::$app->request->get('page');
+			$page = Yii::$app->session->get(self::class . '_page', 1);
 			
 			$params = ['index'];
 			
@@ -89,9 +97,8 @@ class ArticleController extends ApiController {
 	 */
 	public function actionUpdate($id) {
 		$model = $this->findModel($id);
-		
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			$page = Yii::$app->request->get('page');
+			$page = Yii::$app->session->get(self::class . '_page', 1);
 			
 			$params = ['index'];
 			

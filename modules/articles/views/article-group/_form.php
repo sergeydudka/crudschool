@@ -17,13 +17,15 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'description')->textarea(['rows' => 10]) ?>
 	
 	<?= $form->field($model, 'parent_id')
-        ->dropDownList(\modules\articles\models\ArticleGroup::getDropdown(), ['prompt' => '-----']); ?>
+        ->dropDownList(\crudschool\modules\articles\models\ArticleGroup::getDropdown(), ['prompt' => '-----']); ?>
     
 	<?= $form->field($model, 'article_category_id')
-		->dropDownList(\modules\articles\models\ArticleCategory::getDropdown(), ['prompt' => '-----']); ?>
+		->dropDownList(\crudschool\modules\articles\models\ArticleCategory::getDropdown(), ['prompt' => '-----']); ?>
 	
 	<?= $form->field($model, 'difficult_id')
-		->dropDownList(\modules\articles\models\Difficult::getDropdown(\modules\articles\models\Difficult::TYPE_ARTICLE_GROUP_DIFFICULT), ['prompt' => '-----']); ?>
+		->dropDownList(\crudschool\modules\articles\models\Difficult::getDropdown(\crudschool\modules\articles\models\Difficult::TYPE_ARTICLE_GROUP_DIFFICULT), ['prompt' => '-----']); ?>
+	
+	<?= $form->field($model, 'alias')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

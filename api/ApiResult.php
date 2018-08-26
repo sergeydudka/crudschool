@@ -39,8 +39,8 @@ class ApiResult extends BaseObject {
 		} else {
 			$this->result = [
 				'list' => $result,
-				'total' => count($result),
-				'count' => count($result),
+				'total' => (is_array($result) || $result instanceof \Countable) ? count($result) : 1,
+				'count' => (is_array($result) || $result instanceof \Countable) ? count($result) : 1,
 				'behaviours' => [],
 			];
 		}

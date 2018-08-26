@@ -38,6 +38,14 @@ class ArticleGroupController extends ApiController {
 			'query' => ArticleGroup::find(),
 		]);
 		
+		$page = Yii::$app->request->get('page');
+		
+		if ($page) {
+			Yii::$app->session->set(self::class . '_page', $page);
+		} else {
+			Yii::$app->session->set(self::class . '_page', 1);
+		}
+		
 		return $this->render('index', [
 			'dataProvider' => $dataProvider,
 		]);
@@ -64,7 +72,15 @@ class ArticleGroupController extends ApiController {
 		$model = new ArticleGroup();
 		
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['index']);
+			$page = Yii::$app->session->get(self::class . '_page', 1);
+			
+			$params = ['index'];
+			
+			if ($page) {
+				$params['page'] = $page;
+			}
+			
+			return $this->redirect($params);
 		}
 		
 		return $this->render('create', [
@@ -83,7 +99,15 @@ class ArticleGroupController extends ApiController {
 		$model = $this->findModel($id);
 		
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['index']);
+			$page = Yii::$app->session->get(self::class . '_page', 1);
+			
+			$params = ['index'];
+			
+			if ($page) {
+				$params['page'] = $page;
+			}
+			
+			return $this->redirect($params);
 		}
 		
 		return $this->render('update', [

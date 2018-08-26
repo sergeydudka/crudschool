@@ -4,6 +4,7 @@ namespace crudschool\modules\articles\models;
 
 use crudschool\behaviors\HTMLEncodeBehavior;
 use crudschool\behaviors\TimestampBehavior;
+use crudschool\behaviors\AliasBehavior;
 use crudschool\models\RelationshipModel;
 use crudschool\behaviors\BlameableBehavior;
 use yii\helpers\ArrayHelper;
@@ -20,6 +21,7 @@ use yii\helpers\ArrayHelper;
  * @property int $created_by
  * @property int $updated_by
  * @property string $required
+ * @property int $alias_id
  */
 class ArticleGroup extends RelationshipModel {
 	/**
@@ -42,7 +44,11 @@ class ArticleGroup extends RelationshipModel {
 			],
 			BlameableBehavior::class => [
 				'class' => BlameableBehavior::class
-			]
+			],
+			AliasBehavior::class => [
+				'class' => AliasBehavior::class,
+				'from' => 'title'
+			],
 		];
 	}
 	
@@ -54,7 +60,7 @@ class ArticleGroup extends RelationshipModel {
 			[['description'], 'string'],
 			[['required'], 'string'],
 			[['created_at', 'updated_at'], 'safe'],
-			[['created_by', 'updated_by', 'parent_id', 'difficult_id'], 'integer'],
+			[['created_by', 'updated_by', 'parent_id', 'difficult_id', 'alias_id'], 'integer'],
 			[['title'], 'string', 'max' => 256],
 		];
 	}
@@ -65,8 +71,8 @@ class ArticleGroup extends RelationshipModel {
 	public function attributeLabels() {
 		return [
 			'article_group_id' => 'Article Group ID',
-			'parent_id' => 'Parent ID',
-			'article_category_id' => 'Article Category ID',
+			'parent_id' => 'Parent',
+			'article_category_id' => 'Article Category',
 			'title' => 'Title',
 			'description' => 'Description',
 			'created_at' => 'Created At',
@@ -75,6 +81,7 @@ class ArticleGroup extends RelationshipModel {
 			'updated_by' => 'Updated By',
 			'difficult_id' => 'Difficult',
 			'required' => 'Required',
+			'alias_id' => 'Alias',
 		];
 	}
 	

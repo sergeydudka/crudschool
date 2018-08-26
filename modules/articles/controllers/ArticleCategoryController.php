@@ -38,6 +38,14 @@ class ArticleCategoryController extends ApiController {
 			'query' => ArticleCategory::find(),
 		]);
 		
+		$page = Yii::$app->request->get('page');
+		
+		if ($page) {
+			Yii::$app->session->set(self::class . '_page', $page);
+		} else {
+			Yii::$app->session->set(self::class . '_page', 1);
+		}
+		
 		return $this->render('index', [
 			'dataProvider' => $dataProvider,
 		]);
@@ -64,7 +72,15 @@ class ArticleCategoryController extends ApiController {
 		$model = new ArticleCategory();
 		
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->article_category_id]);
+			$page = Yii::$app->session->get(self::class . '_page', 1);
+			
+			$params = ['index'];
+			
+			if ($page) {
+				$params['page'] = $page;
+			}
+			
+			return $this->redirect($params);
 		}
 		
 		return $this->render('create', [
@@ -83,7 +99,15 @@ class ArticleCategoryController extends ApiController {
 		$model = $this->findModel($id);
 		
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['view', 'id' => $model->article_category_id]);
+			$page = Yii::$app->session->get(self::class . '_page', 1);
+			
+			$params = ['index'];
+			
+			if ($page) {
+				$params['page'] = $page;
+			}
+			
+			return $this->redirect($params);
 		}
 		
 		return $this->render('update', [

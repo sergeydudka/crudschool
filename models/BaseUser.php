@@ -123,7 +123,7 @@ class BaseUser extends ActiveRecord implements IdentityInterface
      */
     public function getId()
     {
-        return $this->getPrimaryKey();
+        return $this->user_id;
     }
 
     /**

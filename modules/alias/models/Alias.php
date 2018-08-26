@@ -24,11 +24,8 @@ class Alias extends \yii\db\ActiveRecord {
 	 */
 	public function rules() {
 		return [
-			[['alias_id'], 'required'],
 			[['alias_id', 'language_id', 'ref_id'], 'integer'],
 			[['ref_model', 'code'], 'string', 'max' => 256],
-			[['code'], 'unique'],
-			[['alias_id'], 'unique'],
 		];
 	}
 	
@@ -54,12 +51,10 @@ class Alias extends \yii\db\ActiveRecord {
 	}
 	
 	public static function setAlias($ref_id, $ref_model, $code) {
-		$model = new self();
-		$model->load([
-			'ref_id' => $ref_id,
-			'ref_model' => $ref_model,
-			'code' => $code
-		]);
-		return $model->save();
+		$model = new Alias();
+		$model->ref_id = $ref_id;
+		$model->ref_model = $ref_model;
+		$model->code = $code;
+		return $model;
 	}
 }

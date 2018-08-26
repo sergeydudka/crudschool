@@ -27,7 +27,7 @@ use crudschool\behaviors\BlameableBehavior;
  */
 class Article extends RelationshipModel {
 	
-	const STATUS_DEFAULT = 'disabled';
+	const STATUS_DEFAULT = 'waiting';
 	
 	/**
 	 * {@inheritdoc}
@@ -51,8 +51,9 @@ class Article extends RelationshipModel {
 				'class' => BlameableBehavior::class,
 			],
 			AliasBehavior::class => [
-				'class' => AliasBehavior::class
-			]
+				'class' => AliasBehavior::class,
+				'from' => 'title'
+			],
 		];
 	}
 	
@@ -61,9 +62,9 @@ class Article extends RelationshipModel {
 			$this->status = self::STATUS_DEFAULT;
 		}
 		
-		if ($this->language_id === null) {
+		/*if ($this->language_id === null) {
 			$this->language_id = \Yii::$app->language;
-		}
+		}*/
 		parent::init();
 	}
 	
@@ -93,10 +94,10 @@ class Article extends RelationshipModel {
 			'created_by' => 'Created By',
 			'updated_by' => 'Updated By',
 			'status' => 'Status',
-			'article_group_id' => 'Article Group ID',
+			'article_group_id' => 'Article Group',
 			'difficult_id' => 'Difficult',
-			'language_id' => 'Language ID',
-			'alias_id' => 'Alias ID',
+			'language_id' => 'Language',
+			'alias_id' => 'Alias',
 		];
 	}
 	

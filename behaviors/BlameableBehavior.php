@@ -13,6 +13,26 @@ use crudschool\modules\users\models\User;
 use yii\db\ActiveRecord;
 
 class BlameableBehavior extends \yii\behaviors\BlameableBehavior {
+	
+	public function events() {
+		return [
+			ActiveRecord::EVENT_BEFORE_INSERT => 'setCreater',
+			ActiveRecord::EVENT_BEFORE_UPDATE => 'setUpdater',
+			ActiveRecord::EVENT_BEFORE_VALIDATE => 'setCreater',
+		];
+	}
+	
+	public function setCreater() {
+		if (!$this->owner->created_by) {
+			$this->owner->created_by = \Yii::$app->getUser()->getId();
+		}
+		$this->setUpdater();
+	}
+	
+	public function setUpdater() {
+		$this->owner->updated_by = \Yii::$app->getUser()->getId();
+	}
+	
 	/**
 	 * @return \yii\db\ActiveQuery
 	 */
@@ -20,6 +40,7 @@ class BlameableBehavior extends \yii\behaviors\BlameableBehavior {
 		/* @var $owner ActiveRecord */
 		$owner = $this->owner;
 		return $owner->hasOne(User::class, ['user_id' => 'created_by']);
+		User::find()->where(['user_id' => 1])->one();
 	}
 	
 	/**

@@ -8,8 +8,13 @@
 
 namespace crudschool\common\url;
 
+
+use crudschool\modules\languages\common\Language;
+
 class Request extends \yii\web\Request {
+	
 	protected function resolvePathInfo() {
+		
 		$pathInfo = $this->getUrl();
 		
 		if (($pos = strpos($pathInfo, '?')) !== false) {
@@ -50,6 +55,16 @@ class Request extends \yii\web\Request {
 			$pathInfo = substr($pathInfo, 1);
 		}
 		
+		$pathInfo = $this->parseLanguage($pathInfo);
+		
 		return (string)$pathInfo;
+	}
+	
+	private function parseLanguage($pathInfo) {
+		$url = \Yii::$app->lang->parseLanguage($pathInfo);
+		if ($url) {
+			$pathInfo = trim(strtr($pathInfo, [$url => '']), '/');
+		}
+		return $pathInfo;
 	}
 }

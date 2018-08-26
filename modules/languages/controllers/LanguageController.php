@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use crudschool\api\ApiController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * LanguageController implements the CRUD actions for Language model.
@@ -61,9 +62,13 @@ class LanguageController extends ApiController {
 	 */
 	public function actionCreate() {
 		$model = new Language();
+		$model->flag = UploadedFile::getInstances($model, 'flag');
 		
 		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['index']);
+			if ($model->upload()) {
+				// file is uploaded successfully
+				return $this->redirect(['index']);
+			}
 		}
 		
 		return $this->render('create', [
@@ -81,8 +86,19 @@ class LanguageController extends ApiController {
 	public function actionUpdate($id) {
 		$model = $this->findModel($id);
 		
-		if ($model->load(Yii::$app->request->post()) && $model->save()) {
-			return $this->redirect(['index']);
+		if ($model->load(Yii::$app->request->post())) {
+			
+			$flag = UploadedFile::getInstance($model, 'flag');
+			
+			if ($flag) {
+				$model->flag = is_array($flag) ? reset($flag) : $flag;
+			}
+			
+			if ($model->upload()) {
+				// file is uploaded successfully
+				$model->save();
+				return $this->redirect(['index']);
+			}
 		}
 		
 		return $this->render('update', [

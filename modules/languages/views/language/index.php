@@ -26,7 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'url',
             'code',
             'title',
-            'flag',
+            //'flag',
+	
+	        [
+		        'attribute' => 'flag',
+		        'format' => 'html',
+		        'value' => function ($model) {
+			        return Html::img(Yii::$app->getHomeUrl() .  $model->flag);
+		        }
+	        ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

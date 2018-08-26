@@ -29,6 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_at',
             //'created_by',
             //'updated_by',
+	
+	        [
+		        'attribute' => 'alias_id',
+		        'value' => function ($model) {
+			        return $model->getAlias();
+		        }
+	        ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

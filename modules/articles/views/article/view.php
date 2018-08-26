@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_by',
             'status',
             'article_group_id',
+            'alias_id',
         ],
     ]) ?>
 

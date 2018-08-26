@@ -4,11 +4,13 @@ namespace crudschool\modules\languages\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "language".
  *
  * @property int $language_id
+ * @property string $url
  * @property string $code
  * @property string $title
  * @property string $flag
@@ -29,8 +31,23 @@ class Language extends \yii\db\ActiveRecord {
 			[['url', 'code', 'title'], 'required'],
 			[['url'], 'string', 'max' => 3],
 			[['code'], 'string', 'max' => 50],
-			[['title', 'flag'], 'string', 'max' => 256],
+			[['title'], 'string', 'max' => 256],
+			[['flag'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
 		];
+	}
+	
+	public function upload() {
+		if ($this->validate()) {
+			$path = 'uploads/' . $this->flag->baseName . '.' . $this->flag->extension;
+			/** @var UploadedFile $flag */
+			$flag = $this->flag;
+			if ($this->flag->saveAs($path)) {
+				$this->flag = $path;
+			}
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	/**

@@ -25,8 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'article_id',
             'title',
             //'description:ntext',
-            'created_at',
-            'updated_at',
+            //'created_at',
+            //'updated_at',
             'status',
             //'article_group_id',
 
@@ -40,19 +40,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
 	
-	        [
+	        /*[
 		        'attribute' => 'created_by',
 		        'value' => function ($model) {
 			        return $model->created->username;
 		        }
-	        ],
+	        ],*/
 	
-	        [
+	        /*[
 		        'attribute' => 'updated_by',
 		        'value' => function ($model) {
 			        return $model->updated->username;
 		        }
-	        ],
+	        ],*/
 	
 	        [
 		        'attribute' => 'difficult_id',
@@ -67,8 +67,16 @@ $this->params['breadcrumbs'][] = $this->title;
 			        return $model->language->title;
 		        }
 	        ],
+         
+	        [
+		        'attribute' => 'alias_id',
+		        'value' => function ($model) {
+			        return $model->getAlias();
+		        }
+	        ],
             
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    
 </div>

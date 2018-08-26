@@ -1,6 +1,6 @@
 <?php
 
-namespace modules\articles\controllers;
+namespace crudschool\modules\articles\controllers;
 
 /**
  * Default controller for the `article` module
