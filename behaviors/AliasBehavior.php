@@ -53,10 +53,12 @@ class AliasBehavior extends Behavior {
 	public function setAlias() {
 		$aliasID = $this->owner->alias_id;
 		$code = trim($this->getPostData());
+		$newCode = false;
 		if (!$code && $this->from && $this->owner[$this->from]) {
 			$code = \crudschool\common\helpers\Transliteration::text($this->owner[$this->from], '-');
 			
 			$code = strtolower($code);
+			$newCode = true;
 		}
 		$alias = null;
 		
@@ -64,9 +66,11 @@ class AliasBehavior extends Behavior {
 			$alias = Alias::findOne(['alias_id' => $aliasID]);
 		} elseif ($code) {
 			$alias = Alias::findOne(['code' => $code, 'ref_model' => get_class($this->owner)]);
-			if ($alias) {
+			if ($alias && !$newCode) {
 				$this->owner->addError($this->aliasField, "Code $code has already been taken by model " . get_class($this->owner) . ".");
 				return false;
+			} elseif ($alias) {
+				$code = '' . time();
 			}
 		}
 		

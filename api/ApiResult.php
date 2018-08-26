@@ -20,6 +20,7 @@ class ApiResult extends BaseObject {
 	public $rules;
 	public $scenarios;
 	public $errors;
+	public $status;
 	
 	
 	/**
@@ -36,6 +37,7 @@ class ApiResult extends BaseObject {
 				'count' => $result->getCount(),
 				'behaviours' => $result->getBehaviors(),
 			];
+			$this->errors = $result->getErrors();
 		} else {
 			$this->result = [
 				'list' => $result,
@@ -43,14 +45,17 @@ class ApiResult extends BaseObject {
 				'count' => (is_array($result) || $result instanceof \Countable) ? count($result) : 1,
 				'behaviours' => [],
 			];
+			
+			$this->errors = (is_object($result) && method_exists($result, 'getErrors')) ? $result->getErrors() : false;
 		}
 	}
 	
 	public function setModel(ActiveRecord $model) {
+		$this->status = !$this->errors;
 		$this->fields = $model->getTableSchema();
 		$this->rules = $model->rules();
 		$this->labels = $model->attributeLabels();
 		$this->scenarios = $model->scenarios();
-		$this->errors = $model->getErrors();
+		$this->errors = $this->errors;
 	}
 }

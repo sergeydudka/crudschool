@@ -24,13 +24,13 @@ class BlameableBehavior extends \yii\behaviors\BlameableBehavior {
 	
 	public function setCreater() {
 		if (!$this->owner->created_by) {
-			$this->owner->created_by = \Yii::$app->getUser()->getId();
+			$this->owner->created_by = \Yii::$app->getUser()->getId() ?? 1;
 		}
 		$this->setUpdater();
 	}
 	
 	public function setUpdater() {
-		$this->owner->updated_by = \Yii::$app->getUser()->getId();
+		$this->owner->updated_by = \Yii::$app->getUser()->getId() ?? 1;
 	}
 	
 	/**
@@ -40,7 +40,6 @@ class BlameableBehavior extends \yii\behaviors\BlameableBehavior {
 		/* @var $owner ActiveRecord */
 		$owner = $this->owner;
 		return $owner->hasOne(User::class, ['user_id' => 'created_by']);
-		User::find()->where(['user_id' => 1])->one();
 	}
 	
 	/**
