@@ -5,7 +5,7 @@ namespace crudschool\modules\menu\controllers;
 use crudschool\api\ApiController;
 
 /**
- * Default controller for the `adminmenu` module
+ * Default controller for the `menu` module
  */
 class DefaultController extends ApiController {
 	
