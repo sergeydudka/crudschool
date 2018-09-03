@@ -9,8 +9,12 @@
 namespace crudschool\behaviors;
 
 
+use crudschool\interfaces\AngularViewInterface;
 use crudschool\modules\users\models\User;
 use yii\db\ActiveRecord;
+use yii\rest\CreateAction;
+use yii\rest\IndexAction;
+use yii\rest\UpdateAction;
 
 class BlameableBehavior extends \yii\behaviors\BlameableBehavior {
 	

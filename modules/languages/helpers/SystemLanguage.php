@@ -67,4 +67,23 @@ class SystemLanguage extends BaseObject {
 			return self::$language->url;
 		}
 	}
+	
+	public function __get($name) {
+		//////////////
+		echo '<pre>';
+		var_dump(self::$language);
+		echo '</pre>';
+		die();
+		//////////////
+		if (self::$language) {
+			$getter = 'get' . $name;
+			if (self::$language->hasAttribute($name)) {
+				return self::$language->getAttribute($name);
+			} elseif (method_exists(self::$language, $getter)) {
+				return $this->$getter();
+			}
+		}
+		
+		return parent::__get($name);
+	}
 }

@@ -2,8 +2,7 @@
 
 namespace crudschool\modules\alias\models;
 
-use Yii;
-use yii\db\ActiveRecord;
+use crudschool\models\BaseModel;
 
 /**
  * This is the model class for table "alias_relations".
@@ -11,7 +10,7 @@ use yii\db\ActiveRecord;
  * @property int $alias_id
  * @property int $rel_id
  */
-class AliasRelations extends ActiveRecord {
+class AliasRelations extends BaseModel {
 	/**
 	 * {@inheritdoc}
 	 */

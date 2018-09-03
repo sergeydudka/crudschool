@@ -2,6 +2,7 @@
 
 namespace crudschool\modules\languages\models;
 
+use crudschool\models\BaseModel;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
@@ -15,7 +16,7 @@ use yii\web\UploadedFile;
  * @property string $title
  * @property string $flag
  */
-class Language extends \yii\db\ActiveRecord {
+class Language extends BaseModel {
 	/**
 	 * {@inheritdoc}
 	 */

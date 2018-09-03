@@ -25,6 +25,7 @@ class DefaultController extends ApiController {
 	}
 	
 	public function prepareDataProvider() {
+		\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 		$result = [];
 		foreach (\Yii::$app->getModules() as $id => $module) {
 			if ($id == $this->module->id || $id == 'debug' || $id == 'gii') {

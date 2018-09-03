@@ -14,10 +14,7 @@ use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\rest\ActiveController;
 
-abstract class RelationshipModel extends ActiveRecord implements RelationshipInteface {
-	public function init() {
-		parent::init();
-	}
+abstract class RelationshipModel extends BaseModel implements RelationshipInteface {
 	
 	public function afterFind() {
 		parent::afterFind();
@@ -35,7 +32,9 @@ abstract class RelationshipModel extends ActiveRecord implements RelationshipInt
 		/* @var $class RelationshipInteface*/
 		
 		foreach ($class::relationships() as $attribute => $relationship) {
-			if ($this->hasAttribute($attribute)) {
+			if ($relationship instanceof RelationshipField) {
+				$this->$attribute = $this->{$relationship->getMethod()};
+			} else if ($this->hasAttribute($attribute)) {
 				$this->$attribute = $this->$relationship;
 			} else {
 				throw new InvalidConfigException('Getting unknown property: ' . $class . '::' . $attribute . '.');

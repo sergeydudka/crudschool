@@ -2,8 +2,11 @@
 
 namespace crudschool\modules\articles\models;
 
-use yii\db\ActiveRecord;
+use crudschool\models\BaseModel;
 use yii\helpers\ArrayHelper;
+use yii\rest\CreateAction;
+use yii\rest\IndexAction;
+use yii\rest\UpdateAction;
 
 /**
  * This is the model class for table "difficult".
@@ -13,7 +16,7 @@ use yii\helpers\ArrayHelper;
  * @property string $title
  * @property string $sort
  */
-class Difficult extends ActiveRecord {
+class Difficult extends BaseModel {
 	
 	const TYPE_ARTICLE_DIFFICULT = 'article';
 	const TYPE_ARTICLE_GROUP_DIFFICULT = 'article_group';

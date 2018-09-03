@@ -22,7 +22,7 @@ abstract class ApiController extends BaseApiController {
 	 * @param $module
 	 * @param array $config
 	 */
-	public function __construct(string $id, $module, array $config = []) {
+	public function __construct($id, $module, array $config = []) {
 		//if (\Yii::$app->getUser()->getIsGuest() &&
 		//	\Yii::$app->request->getPathInfo() !== \Yii::$app->params['loginUrl']) {
 		//	$this->redirect([\Yii::$app->params['loginUrl']]);
@@ -32,23 +32,12 @@ abstract class ApiController extends BaseApiController {
 		$this->user = \Yii::$app->getUser()->getIdentity();
 	}
 	
-	public function beforeAction($action) {
-		parent::beforeAction($action);
-		
-		if (\Yii::$app->getRequest()->getMethod() === 'OPTIONS') {
-			\Yii::$app->getResponse()->getHeaders()->set('Allow', 'POST GET PUT');
-			\Yii::$app->end();
-		}
-		
-		return true;
-	}
-	
 	public function afterAction($action, $result) {
-		$response = new ApiResult($result);
+		$response = new ApiResult($action, $result);
 		if ($this->modelClass) {
 			$response->setModel(new $this->modelClass());
 		}
-		\Yii::$app->response->format = Response::FORMAT_JSON;
+		//\Yii::$app->response->format = Response::FORMAT_JSON;
 		return parent::afterAction($action, $response);
 	}
 	

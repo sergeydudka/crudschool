@@ -6,9 +6,14 @@ use crudschool\behaviors\HTMLEncodeBehavior;
 use crudschool\behaviors\TimestampBehavior;
 use crudschool\behaviors\BlameableBehavior;
 use crudschool\behaviors\AliasBehavior;
+use crudschool\models\relationship\AliasRelationshipField;
+use crudschool\models\relationship\UserRelationshipField;
 use crudschool\models\RelationshipModel;
 use crudschool\modules\users\models\User;
 use yii\helpers\ArrayHelper;
+use yii\rest\CreateAction;
+use yii\rest\IndexAction;
+use yii\rest\UpdateAction;
 
 /**
  * This is the model class for table "article_category".
@@ -89,9 +94,9 @@ class ArticleCategory extends RelationshipModel {
 	
 	public static function relationships() {
 		return [
-			'created_by' => 'created',
-			'updated_by' => 'updated',
-			'alias_id' => 'alias'
+			'created_by' => new UserRelationshipField(),
+			'updated_by' => new UserRelationshipField(),
+			'alias_id' => new AliasRelationshipField(),
 		];
 	}
 }

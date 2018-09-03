@@ -9,53 +9,87 @@
 namespace crudschool\api;
 
 
+use crudschool\interfaces\AngularModelInterface;
+use crudschool\models\RelationshipModel;
+use yii\base\Action;
 use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 
 class ApiResult extends BaseObject {
-	public $result;
-	public $fields;
-	public $labels;
-	public $rules;
-	public $scenarios;
-	public $errors;
 	public $status;
+	public $statusCode;
+	public $fields;
+	public $result;
+	public $errors;
 	
+	private $action;
 	
 	/**
 	 * ApiResult constructor.
 	 * @param ActiveDataProvider|array $result
+	 * @param Action $action
 	 */
-	public function __construct($result) {
+	public function __construct($action, $result) {
 		parent::__construct();
-		
+		$this->action = $action;
 		if ($result instanceof ActiveDataProvider) {
 			$this->result = [
 				'list' => $result->getModels(),
 				'total' => $result->getTotalCount(),
 				'count' => $result->getCount(),
-				'behaviours' => $result->getBehaviors(),
+				'model' => $result->getModels()[0]->className(),
 			];
-			$this->errors = $result->getErrors();
+			$this->errors = false;
 		} else {
 			$this->result = [
 				'list' => $result,
 				'total' => (is_array($result) || $result instanceof \Countable) ? count($result) : 1,
 				'count' => (is_array($result) || $result instanceof \Countable) ? count($result) : 1,
-				'behaviours' => [],
+				'model' => 'Array',
 			];
 			
 			$this->errors = (is_object($result) && method_exists($result, 'getErrors')) ? $result->getErrors() : false;
+			
+			$this->status = !$this->errors;
+			$this->statusCode = 200;
+			$this->fields = [];
 		}
 	}
 	
 	public function setModel(ActiveRecord $model) {
 		$this->status = !$this->errors;
-		$this->fields = $model->getTableSchema();
-		$this->rules = $model->rules();
-		$this->labels = $model->attributeLabels();
-		$this->scenarios = $model->scenarios();
+		$this->statusCode = 200;
+		$this->fields = $this->getModelFields($model);
 		$this->errors = $this->errors;
+	}
+	
+	private function getModelFields(ActiveRecord $model) {
+		$schema = $model->getTableSchema();
+		$relationships = ($model instanceof RelationshipModel) ? $model->relationships() : [];
+		$labels = $model->attributeLabels();
+		$displayFields = $model->fields();
+		
+		$result = [];
+		
+		foreach ($schema->columns as $key => $column) {
+			/** var yii\db\mysql\ColumnSchema $column */
+			$column = (array)$column;
+			$column['rel'] = $relationships[$key] ?? false;
+			$column['label'] = $labels[$key] ?? false;
+			
+			if ($column['rel']) {
+				$rel = $column['rel']->getModel();
+				if (is_callable([$rel, 'getDropdown'])) {
+					$column['enumValues'] = call_user_func_array([$rel, 'getDropdown'], $column['rel']->getParams());
+				}
+			}
+			
+			$column['display'] = in_array($key, $displayFields);
+			
+			$result[$key] = $column;
+		}
+		
+		return $result;
 	}
 }

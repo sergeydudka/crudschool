@@ -9,7 +9,10 @@
 namespace crudschool\behaviors;
 
 
+use yii\rest\CreateAction;
+
 class TimestampBehavior extends \yii\behaviors\TimestampBehavior {
+	
 	protected function getValue ($event) {
 		if ($this->value === null) {
 			return date('Y-m-d H:i:s');

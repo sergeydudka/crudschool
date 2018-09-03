@@ -5,9 +5,17 @@ namespace crudschool\modules\articles\models;
 use crudschool\behaviors\HTMLEncodeBehavior;
 use crudschool\behaviors\TimestampBehavior;
 use crudschool\behaviors\AliasBehavior;
+use crudschool\interfaces\AngularModelInterface;
+use crudschool\models\relationship\ArticleCategoryRelationshipField;
+use crudschool\models\relationship\ArticleGroupRelationshipField;
+use crudschool\models\relationship\DifficultRelationshipField;
+use crudschool\models\relationship\UserRelationshipField;
 use crudschool\models\RelationshipModel;
 use crudschool\behaviors\BlameableBehavior;
 use yii\helpers\ArrayHelper;
+use yii\rest\CreateAction;
+use yii\rest\IndexAction;
+use yii\rest\UpdateAction;
 
 /**
  * This is the model class for table "article_group".
@@ -119,11 +127,11 @@ class ArticleGroup extends RelationshipModel {
 	
 	public static function relationships() {
 		return [
-			'difficult_id' => 'difficult',
-			'article_category_id' => 'articleCategory',
-			'parent_id' => 'parent',
-			'created_by' => 'created',
-			'updated_by' => 'updated'
+			'difficult_id' => new DifficultRelationshipField(),
+			'article_category_id' => new ArticleCategoryRelationshipField(),
+			'parent_id' => new ArticleCategoryRelationshipField(),
+			'created_by' => new UserRelationshipField(),
+			'updated_by' => new UserRelationshipField(),
 		];
 	}
 }

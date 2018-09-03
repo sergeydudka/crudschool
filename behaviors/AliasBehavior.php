@@ -33,10 +33,6 @@ class AliasBehavior extends Behavior {
 		];
 	}
 	
-	public function init() {
-		parent::init();
-	}
-	
 	public function getRefID() {
 		/* @var $owner BaseActiveRecord */
 		$owner = $this->owner;

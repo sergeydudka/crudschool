@@ -1,6 +1,9 @@
 <?php
 
+
 namespace crudschool\modules\alias\models;
+
+use crudschool\models\BaseModel;
 
 /**
  * This is the model class for table "alias".
@@ -11,7 +14,7 @@ namespace crudschool\modules\alias\models;
  * @property string $ref_model
  * @property string $code
  */
-class Alias extends \yii\db\ActiveRecord {
+class Alias extends BaseModel {
 	/**
 	 * {@inheritdoc}
 	 */

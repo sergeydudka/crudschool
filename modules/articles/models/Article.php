@@ -4,10 +4,21 @@ namespace crudschool\modules\articles\models;
 
 use crudschool\behaviors\AliasBehavior;
 use crudschool\behaviors\HTMLEncodeBehavior;
+use crudschool\behaviors\LanguageBehavior;
 use crudschool\behaviors\TimestampBehavior;
+use crudschool\models\relationship\AliasRelationshipField;
+use crudschool\models\relationship\ArticleGroupRelationshipField;
+use crudschool\models\relationship\DifficultRelationshipField;
+use crudschool\models\relationship\UserRelationshipField;
+use crudschool\models\RelationshipField;
 use crudschool\models\RelationshipModel;
+use crudschool\modules\alias\models\Alias;
 use crudschool\modules\languages\models\Language;
 use crudschool\behaviors\BlameableBehavior;
+use crudschool\modules\users\models\User;
+use yii\rest\CreateAction;
+use yii\rest\IndexAction;
+use yii\rest\UpdateAction;
 
 /**
  * This is the model class for table "article".
@@ -53,7 +64,7 @@ class Article extends RelationshipModel {
 			AliasBehavior::class => [
 				'class' => AliasBehavior::class,
 				'from' => 'title'
-			],
+			]
 		];
 	}
 	
@@ -132,11 +143,11 @@ class Article extends RelationshipModel {
 	
 	public static function relationships() {
 		return [
-			'difficult_id' => 'difficult',
-			'article_group_id' => 'articleGroup',
-			'created_by' => 'created',
-			'updated_by' => 'updated',
-			'alias_id' => 'alias',
+			'difficult_id' => new DifficultRelationshipField(),
+			'article_group_id' => new ArticleGroupRelationshipField(),
+			'created_by' => new UserRelationshipField(),
+			'updated_by' => new UserRelationshipField(),
+			'alias_id' => new AliasRelationshipField(),
 		];
 	}
 }
