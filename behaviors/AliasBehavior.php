@@ -48,7 +48,7 @@ class AliasBehavior extends Behavior {
 	
 	public function setAlias() {
 		$aliasID = $this->owner->alias_id;
-		$code = trim($this->getPostData());
+		$code = trim($this->getPostAlias());
 		$newCode = false;
 		if (!$code && $this->from && $this->owner[$this->from]) {
 			$code = \crudschool\common\helpers\Transliteration::text($this->owner[$this->from], '-');
@@ -100,7 +100,7 @@ class AliasBehavior extends Behavior {
 		return Alias::findOne(['alias_id' => $this->owner->alias_id])->code;
 	}
 	
-	private function getPostData() {
+	private function getPostAlias() {
 		$post = \Yii::$app->request->post();
 		$className = (new \ReflectionClass($this->owner))->getShortName();
 		return $post[$className][$this->aliasField] ?? NULL;

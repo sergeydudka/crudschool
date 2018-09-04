@@ -12,6 +12,10 @@ class DefaultController extends ApiController {
 	
 	public $modelClass = '';
 	
+	const IGNORE_CONTROLLERS = [
+		'default'
+	];
+	
 	
 	public function actions() {
 		
@@ -64,6 +68,10 @@ class DefaultController extends ApiController {
 			$fileInfo = pathinfo($fileName);
 			
 			$name = \yii\helpers\Inflector::camel2id(str_replace('Controller', '', $fileInfo['filename']));
+			
+			if (in_array($name, self::IGNORE_CONTROLLERS)) {
+				continue;
+			}
 			
 			$class = $controllerNamespace . '\\' . $fileInfo['filename'];
 			

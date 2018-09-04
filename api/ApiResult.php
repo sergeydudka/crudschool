@@ -74,19 +74,26 @@ class ApiResult extends BaseObject {
 		
 		foreach ($schema->columns as $key => $column) {
 			/** var yii\db\mysql\ColumnSchema $column */
-			$column = (array)$column;
-			$column['rel'] = $relationships[$key] ?? false;
-			$column['label'] = $labels[$key] ?? false;
+			$field = [];
+			$field['rel'] = $relationships[$key] ?? false;
+			$field['label'] = $labels[$key] ?? false;
 			
-			if ($column['rel']) {
-				$rel = $column['rel']->getModel();
+			if ($field['rel']) {
+				$rel = $field['rel']->getModel();
 				if (is_callable([$rel, 'getDropdown'])) {
-					$column['enumValues'] = call_user_func_array([$rel, 'getDropdown'], $column['rel']->getParams());
+					$field['enumValues'] = call_user_func_array([$rel, 'getDropdown'], $field['rel']->getParams());
 				}
 			}
 			
-			$column['display'] = in_array($key, $displayFields);
-			
+			$field['display'] = in_array($key, $displayFields);
+			$field['name'] = $column->name;
+			$field['allowNull'] = $column->allowNull;
+			$field['type'] = $column->type;
+			$field['defaultValue'] = $column->defaultValue;
+			$field['size'] = $column->size;
+			$field['precision'] = $column->precision;
+			$field['isPrimaryKey'] = $column->isPrimaryKey;
+			$field['comment'] = $column->comment;
 			$result[$key] = $column;
 		}
 		
