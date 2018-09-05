@@ -15,6 +15,9 @@ use yii\base\Action;
 use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
+use yii\rest\CreateAction;
+use yii\rest\DeleteAction;
+use yii\rest\UpdateAction;
 
 class ApiResult extends BaseObject {
 	public $status;
@@ -24,6 +27,9 @@ class ApiResult extends BaseObject {
 	public $errors;
 	
 	private $action;
+	
+	
+	const FIELD_LIST_TYPE = "list";
 	
 	/**
 	 * ApiResult constructor.
@@ -65,6 +71,15 @@ class ApiResult extends BaseObject {
 	}
 	
 	private function getModelFields(ActiveRecord $model) {
+		
+		$actionName = get_class(\Yii::$app->controller);
+		
+		if ($actionName == UpdateAction::class ||
+			$actionName == CreateAction::class ||
+			$actionName == DeleteAction::class) {
+			return [];
+		}
+		
 		$schema = $model->getTableSchema();
 		$relationships = ($model instanceof RelationshipModel) ? $model->relationships() : [];
 		$labels = $model->attributeLabels();
@@ -78,20 +93,30 @@ class ApiResult extends BaseObject {
 			$field['rel'] = $relationships[$key] ?? false;
 			$field['label'] = $labels[$key] ?? false;
 			
-			if ($field['rel']) {
+			$field['type'] = $column->type;
+			
+			if ($field['rel'] && !$column->enumValues) {
 				$rel = $field['rel']->getModel();
 				if (is_callable([$rel, 'getDropdown'])) {
-					$field['enumValues'] = call_user_func_array([$rel, 'getDropdown'], $field['rel']->getParams());
+					$field['options'] = call_user_func_array([$rel, 'getDropdown'], $field['rel']->getParams());
+					$field['type'] = self::FIELD_LIST_TYPE;
+				}
+			} else {
+				if ($column->enumValues) {
+					$options = $column->enumValues;
+					$field['options'] = array_combine($options, $options);
+					$field['type'] = self::FIELD_LIST_TYPE;
+				} else {
+					$field['options'] = $column->enumValues;
 				}
 			}
 			
 			$field['display'] = in_array($key, $displayFields);
 			$field['name'] = $column->name;
 			$field['allowNull'] = $column->allowNull;
-			$field['type'] = $column->type;
 			$field['defaultValue'] = $column->defaultValue;
 			$field['size'] = $column->size;
-			$field['precision'] = $column->precision;
+			//$field['precision'] = $column->precision;
 			$field['isPrimaryKey'] = $column->isPrimaryKey;
 			$field['comment'] = $column->comment;
 			$result[$key] = $field;

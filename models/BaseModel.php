@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
 use yii\rest\CreateAction;
 use yii\rest\IndexAction;
 use yii\rest\UpdateAction;
+use yii\rest\ViewAction;
 
 class BaseModel extends ActiveRecord implements AngularViewInterface {
 	protected $hiddenFields = [];
@@ -24,19 +25,26 @@ class BaseModel extends ActiveRecord implements AngularViewInterface {
 		/* ActionIndex hiddenFields*/
 		$this->setHiddenFields(IndexAction::class, 'description');
 		
+		/* ViewAction hiddenFields*/
+		$this->setHiddenFields(ViewAction::class, 'created_by');
+		$this->setHiddenFields(ViewAction::class, 'updated_by');
+		$this->setHiddenFields(ViewAction::class, 'language_id');
+		$this->setHiddenFields(ViewAction::class, 'created_at');
+		$this->setHiddenFields(ViewAction::class, 'updated_at');
+		
 		/* CreateAction hiddenFields*/
-		$this->setHiddenFields(CreateAction::class, 'created_by');
+		/*$this->setHiddenFields(CreateAction::class, 'created_by');
 		$this->setHiddenFields(CreateAction::class, 'updated_by');
 		$this->setHiddenFields(CreateAction::class, 'language_id');
 		$this->setHiddenFields(CreateAction::class, 'created_at');
-		$this->setHiddenFields(CreateAction::class, 'updated_at');
+		$this->setHiddenFields(CreateAction::class, 'updated_at');*/
 		
 		/* UpdateAction hiddenFields*/
-		$this->setHiddenFields(UpdateAction::class, 'created_by');
+		/*$this->setHiddenFields(UpdateAction::class, 'created_by');
 		$this->setHiddenFields(UpdateAction::class, 'updated_by');
 		$this->setHiddenFields(UpdateAction::class, 'language_id');
 		$this->setHiddenFields(UpdateAction::class, 'created_at');
-		$this->setHiddenFields(UpdateAction::class, 'updated_at');
+		$this->setHiddenFields(UpdateAction::class, 'updated_at');*/
 	}
 	
 	public function fields() {
@@ -44,7 +52,7 @@ class BaseModel extends ActiveRecord implements AngularViewInterface {
 		if ($this->hasHiddenFields($actionName)) {
 			return array_diff(array_keys($this->attributes), $this->getHiddenFields($actionName));
 		}
-		return array_keys($this->attributes);
+		return parent::fields();
 	}
 	
 	public function getHiddenFields($actionName) {
