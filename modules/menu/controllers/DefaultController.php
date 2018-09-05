@@ -16,6 +16,11 @@ class DefaultController extends ApiController {
 		'default'
 	];
 	
+	const INDEX_ACTION_URL = "";
+	const VIEW_ACTION_URL = "/view";
+	const UPDATE_ACTION_URL = "/update";
+	const CREATE_ACTION_URL = "/create";
+	const DELETE_ACTION_URL = "/delete";
 	
 	public function actions() {
 		
@@ -76,10 +81,33 @@ class DefaultController extends ApiController {
 			$class = $controllerNamespace . '\\' . $fileInfo['filename'];
 			
 			$controller = new $class($fileInfo['filename'], $module_id);
+			$url = '/' . $module_id . '/' . $name;
 			$result[$name] = [
 				'class' => $class,
-				'url' => '/' . $module_id . '/' . $name,
+				'url' => $url,
 				'label' => '',
+				'actions' => [
+					'index' => [
+						'url' => $url . self::INDEX_ACTION_URL,
+						'access' => true,
+					],
+					'view' => [
+						'url' => $url . self::VIEW_ACTION_URL,
+						'access' => true,
+					],
+					'create' => [
+						'url' => $url . self::CREATE_ACTION_URL,
+						'access' => true,
+					],
+					'update' => [
+						'url' => $url . self::UPDATE_ACTION_URL,
+						'access' => true,
+					],
+					'delete' => [
+						'url' => $url . self::DELETE_ACTION_URL,
+						'access' => true,
+					],
+				],
 			];
 		}
 		return $result;
