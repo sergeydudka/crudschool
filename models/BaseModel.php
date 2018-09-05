@@ -42,9 +42,9 @@ class BaseModel extends ActiveRecord implements AngularViewInterface {
 	public function fields() {
 		$actionName = get_class(\Yii::$app->controller->action);
 		if ($this->hasHiddenFields($actionName)) {
-			return array_diff(parent::fields(), $this->getHiddenFields($actionName));
+			return array_diff(array_keys($this->attributes), $this->getHiddenFields($actionName));
 		}
-		return parent::fields();
+		return array_keys($this->attributes);
 	}
 	
 	public function getHiddenFields($actionName) {

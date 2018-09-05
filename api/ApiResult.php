@@ -94,7 +94,7 @@ class ApiResult extends BaseObject {
 			$field['precision'] = $column->precision;
 			$field['isPrimaryKey'] = $column->isPrimaryKey;
 			$field['comment'] = $column->comment;
-			$result[$key] = $column;
+			$result[$key] = $field;
 		}
 		
 		return $result;
