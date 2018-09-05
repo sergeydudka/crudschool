@@ -3,14 +3,15 @@
 namespace crudschool\modules\menu\controllers;
 
 use crudschool\api\ApiController;
+use http\Url;
 
 /**
  * Default controller for the `menu` module
  */
 class DefaultController extends ApiController {
-	
-	
 	public $modelClass = '';
+	
+	private $basePath = '';
 	
 	const IGNORE_CONTROLLERS = [
 		'default'
@@ -35,6 +36,7 @@ class DefaultController extends ApiController {
 	
 	public function prepareDataProvider() {
 		\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+		$this->basePath = \yii\helpers\Url::base(true);
 		$result = [];
 		foreach (\Yii::$app->getModules() as $id => $module) {
 			if ($id == $this->module->id || $id == 'debug' || $id == 'gii') {
@@ -45,7 +47,6 @@ class DefaultController extends ApiController {
 			
 			$result[$id] = $this->getControllers($id, $module->controllerNamespace,  $class->getFileName());
 		}
-		
 		return $result;
 	}
 	
@@ -81,7 +82,7 @@ class DefaultController extends ApiController {
 			$class = $controllerNamespace . '\\' . $fileInfo['filename'];
 			
 			$controller = new $class($fileInfo['filename'], $module_id);
-			$url = '/' . $module_id . '/' . $name;
+			$url = $this->basePath . '/' . $module_id . '/' . $name;
 			$result[$name] = [
 				'class' => $class,
 				'url' => $url,
