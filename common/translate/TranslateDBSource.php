@@ -10,6 +10,7 @@ namespace crudschool\common\translate;
 
 use yii\db\Expression;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use yii\i18n\DbMessageSource;
 
 class TranslateDBSource extends DbMessageSource {
@@ -17,36 +18,28 @@ class TranslateDBSource extends DbMessageSource {
 	public $sourceMessageTable = 'translation';
 	
 	protected function loadMessagesFromDb($category, $language) {
-		if (!$language) {
-			$language = $this->sourceLanguage;
+		if (!$language || is_array($language)) {
+			$language = \Yii::$app->get('edition')->code;
 		}
 		
-		//////////////
-		echo '<pre>';
-		var_dump(\Yii::$app->get('lang')->code);
-		echo '</pre>';
-		die();
-		//////////////
-		
-		$mainQuery = (new Query())->select(['code', 'translation' => 't2.translation'])
-			->from(['t1' => $this->sourceMessageTable, 't2' => $this->messageTable])
+		$mainQuery = (new Query())->select(['code', 'category', 'translate' => "IFNULL(`$language`, IFNULL(`$this->sourceLanguage`, `code`))"])
+			->from($this->sourceMessageTable)
 			->where([
-				't1.id' => new Expression('[[t2.id]]'),
-				't1.category' => $category,
-				't2.language' => $language,
+				'category' => $category,
 			]);
 		
-		$fallbackLanguage = substr($language, 0, 2);
+		/*$fallbackLanguage = substr($language, 0, 2);
 		$fallbackSourceLanguage = substr($this->sourceLanguage, 0, 2);
 		
 		if ($fallbackLanguage !== $language) {
 			$mainQuery->union($this->createFallbackQuery($category, $language, $fallbackLanguage), true);
 		} elseif ($language === $fallbackSourceLanguage) {
 			$mainQuery->union($this->createFallbackQuery($category, $language, $fallbackSourceLanguage), true);
-		}
+		}*/
 		
 		$messages = $mainQuery->createCommand($this->db)->queryAll();
-		
-		return ArrayHelper::map($messages, 'message', 'translation');
+		return ArrayHelper::map($messages, 'code', 'translate');
 	}
+	
+	public static function format() {}
 }

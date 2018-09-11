@@ -55,13 +55,13 @@ class Request extends \yii\web\Request {
 			$pathInfo = substr($pathInfo, 1);
 		}
 		
-		$pathInfo = $this->parseLanguage($pathInfo);
+		$pathInfo = $this->parseEdition($pathInfo);
 		
 		return (string)$pathInfo;
 	}
 	
-	private function parseLanguage($pathInfo) {
-		$url = \Yii::$app->lang->parseLanguage($pathInfo);
+	private function parseEdition($pathInfo) {
+		$url = \Yii::$app->edition->parse($pathInfo);
 		if ($url) {
 			$pathInfo = trim(strtr($pathInfo, [$url => '']), '/');
 		}

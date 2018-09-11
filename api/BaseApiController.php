@@ -16,16 +16,16 @@ use yii\web\Controller;
 use \Yii;
 
 class BaseApiController extends ActiveController {
-	private $lang;
+	private $edition;
 	public $dataFilter;
 	
 	public function init() {
 		parent::init();
-		$this->lang = \Yii::$app->lang->getInstance();
+		$this->edition = \Yii::$app->edition->getInstance();
 	}
 	
-	public function getLang() {
-		return $this->lang;
+	public function getEdition() {
+		return $this->edition;
 	}
 	
 	public function actions() {

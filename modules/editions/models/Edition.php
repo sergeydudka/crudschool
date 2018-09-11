@@ -1,6 +1,6 @@
 <?php
 
-namespace crudschool\modules\languages\models;
+namespace crudschool\modules\editions\models;
 
 use crudschool\models\BaseModel;
 use Yii;
@@ -16,12 +16,12 @@ use yii\web\UploadedFile;
  * @property string $title
  * @property string $flag
  */
-class Language extends BaseModel {
+class Edition extends BaseModel {
 	/**
 	 * {@inheritdoc}
 	 */
 	public static function tableName() {
-		return 'language';
+		return 'edition';
 	}
 	
 	/**

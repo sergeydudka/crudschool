@@ -69,4 +69,9 @@ class BaseModel extends ActiveRecord implements AngularViewInterface {
 	public function hasHiddenFields($actionName) {
 		return !empty($this->hiddenFields[$actionName]);
 	}
+	
+	protected function t($message) {
+		$translate = \Yii::t('model', $message);
+		return $translate ? $translate : $message;
+	}
 }

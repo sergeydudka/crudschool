@@ -4,7 +4,6 @@ namespace crudschool\modules\articles\models;
 
 use crudschool\behaviors\AliasBehavior;
 use crudschool\behaviors\HTMLEncodeBehavior;
-use crudschool\behaviors\LanguageBehavior;
 use crudschool\behaviors\TimestampBehavior;
 use crudschool\models\relationship\AliasRelationshipField;
 use crudschool\models\relationship\ArticleGroupRelationshipField;
@@ -13,7 +12,7 @@ use crudschool\models\relationship\UserRelationshipField;
 use crudschool\models\RelationshipField;
 use crudschool\models\RelationshipModel;
 use crudschool\modules\alias\models\Alias;
-use crudschool\modules\languages\models\Language;
+use crudschool\modules\editions\models\Edition;
 use crudschool\behaviors\BlameableBehavior;
 use crudschool\modules\users\models\User;
 use yii\rest\CreateAction;
@@ -30,7 +29,7 @@ use yii\rest\UpdateAction;
  * @property string $updated_at
  * @property string $status
  * @property int $article_group_id
- * @property int $language_id
+ * @property int $edition_id
  * @property int $created_by
  * @property int $updated_by
  * @property int $difficult_id
@@ -73,8 +72,8 @@ class Article extends RelationshipModel {
 			$this->status = self::STATUS_DEFAULT;
 		}
 		
-		/*if ($this->language_id === null) {
-			$this->language_id = \Yii::$app->language;
+		/*if ($this->edition_id === null) {
+			$this->edition_id = \Yii::$app->edition;
 		}*/
 		parent::init();
 	}
@@ -87,7 +86,7 @@ class Article extends RelationshipModel {
 			[['description', 'status', 'title'], 'required'],
 			[['description', 'status'], 'string'],
 			[['created_at', 'updated_at'], 'safe'],
-			[['created_by', 'updated_by', 'article_group_id', 'difficult_id', 'language_id', 'alias_id'], 'integer'],
+			[['created_by', 'updated_by', 'article_group_id', 'difficult_id', 'edition_id', 'alias_id'], 'integer'],
 			[['title'], 'string', 'max' => 512],
 		];
 	}
@@ -97,18 +96,18 @@ class Article extends RelationshipModel {
 	 */
 	public function attributeLabels() {
 		return [
-			'article_id' => 'Article ID',
-			'title' => 'Title',
-			'description' => 'Description',
-			'created_at' => 'Date Create',
-			'updated_at' => 'Date Update',
-			'created_by' => 'Created By',
-			'updated_by' => 'Updated By',
-			'status' => 'Status',
-			'article_group_id' => 'Article Group',
-			'difficult_id' => 'Difficult',
-			'language_id' => 'Language',
-			'alias_id' => 'Alias',
+			'article_id' => $this->t('article_id'),
+			'title' => $this->t('title'),
+			'description' => $this->t('description'),
+			'created_at' => $this->t('created_at'),
+			'updated_at' => $this->t('updated_at'),
+			'created_by' => $this->t('created_by'),
+			'updated_by' => $this->t('updated_by'),
+			'status' => $this->t('status'),
+			'article_group_id' => $this->t('article_group_id'),
+			'difficult_id' => $this->t('difficult_id'),
+			'edition_id' => $this->t('edition_id'),
+			'alias_id' => $this->t('alias_id'),
 		];
 	}
 	
@@ -133,10 +132,10 @@ class Article extends RelationshipModel {
 	/**
 	 * @return \yii\db\ActiveQuery
 	 */
-	public function getLanguage() {
-		return $this->hasOne(Language::class,
+	public function getEdition() {
+		return $this->hasOne(Edition::class,
 			[
-				'language_id' => 'language_id'
+				'edition_id' => 'edition_id'
 			]
 		);
 	}

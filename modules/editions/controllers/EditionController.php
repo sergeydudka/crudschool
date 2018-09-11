@@ -1,9 +1,9 @@
 <?php
 
-namespace crudschool\modules\languages\controllers;
+namespace crudschool\modules\editions\controllers;
 
 use Yii;
-use crudschool\modules\languages\models\Language;
+use crudschool\modules\editions\models\Edition;
 use yii\data\ActiveDataProvider;
 use crudschool\api\ApiController;
 use yii\web\NotFoundHttpException;
@@ -13,8 +13,8 @@ use yii\web\UploadedFile;
 /**
  * LanguageController implements the CRUD actions for Language model.
  */
-class LanguageController extends ApiController {
-	public $modelClass = 'crudschool\modules\languages\models\Language';
+class EditionController extends ApiController {
+	public $modelClass = 'crudschool\modules\editions\models\Edition';
 	/**
 	 * {@inheritdoc}
 	 */
