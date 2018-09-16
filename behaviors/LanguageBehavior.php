@@ -19,18 +19,24 @@ use yii\rest\UpdateAction;
 use yii\web\Controller;
 
 class LanguageBehavior extends Behavior {
-	const ATTRIBUTE_NAME = 'language_id';
-	
-	public function events() {
-		return [
-			ActiveRecord::EVENT_INIT => 'initFilter',
-		];
-	}
-	
-	public function initFilter() {
-		parent::init();
-		if ($this->owner->hasProperty(self::ATTRIBUTE_NAME)) {
-			$this->owner->addWhere([self::ATTRIBUTE_NAME => \Yii::$app->get('lang')->__get(self::ATTRIBUTE_NAME)]);
-		}
-	}
+  const ATTRIBUTE_NAME = 'language_id';
+
+  /**
+   * @return array
+   */
+  public function events() {
+    return [
+      ActiveRecord::EVENT_INIT => 'initFilter',
+    ];
+  }
+
+  /**
+   * @throws \yii\base\InvalidConfigException
+   */
+  public function initFilter() {
+    parent::init();
+    if ($this->owner->hasProperty(self::ATTRIBUTE_NAME)) {
+      $this->owner->addWhere([self::ATTRIBUTE_NAME => \Yii::$app->get('lang')->__get(self::ATTRIBUTE_NAME)]);
+    }
+  }
 }

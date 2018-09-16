@@ -14,25 +14,35 @@ use yii\db\ActiveRecord;
 use yii\helpers\Html;
 
 class HTMLEncodeBehavior extends Behavior {
-	public $attributes;
-	
-	public function events() {
-		return [
-			ActiveRecord::EVENT_BEFORE_INSERT => 'encode',
-			ActiveRecord::EVENT_BEFORE_UPDATE => 'encode',
-			ActiveRecord::EVENT_AFTER_FIND => 'decode',
-		];
-	}
-	
-	public function encode ($event) {
-		foreach ($this->attributes as $attribute) {
-			$this->owner->$attribute = Html::encode($this->owner->$attribute);
-		}
-	}
-	
-	public function decode ($event) {
-		foreach ($this->attributes as $attribute) {
-			$this->owner->$attribute = Html::decode($this->owner->$attribute);
-		}
-	}
+  public $attributes;
+
+  /**
+   * @return array
+   */
+  public function events() {
+    return [
+      ActiveRecord::EVENT_BEFORE_INSERT => 'encode',
+      ActiveRecord::EVENT_BEFORE_UPDATE => 'encode',
+      ActiveRecord::EVENT_AFTER_FIND    => 'decode',
+    ];
+  }
+
+
+  /**
+   * @param $event
+   */
+  public function encode($event) {
+    foreach ($this->attributes as $attribute) {
+      $this->owner->$attribute = Html::encode($this->owner->$attribute);
+    }
+  }
+
+  /**
+   * @param $event
+   */
+  public function decode($event) {
+    foreach ($this->attributes as $attribute) {
+      $this->owner->$attribute = Html::decode($this->owner->$attribute);
+    }
+  }
 }

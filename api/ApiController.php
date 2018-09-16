@@ -16,51 +16,67 @@ use yii\web\Response;
 
 
 abstract class ApiController extends BaseApiController {
-	public $user;
-	
-	/**
-	 * ApiController constructor.
-	 * @param string $id
-	 * @param $module
-	 * @param array $config
-	 */
-	public function __construct($id, $module, array $config = []) {
-		//if (\Yii::$app->getUser()->getIsGuest() &&
-		//	\Yii::$app->request->getPathInfo() !== \Yii::$app->params['loginUrl']) {
-		//	$this->redirect([\Yii::$app->params['loginUrl']]);
-		//}
-		
-		parent::__construct($id, $module, $config);
-		$this->user = \Yii::$app->getUser()->getIdentity();
-	}
-	
-	public function beforeAction($action) {
-		parent::beforeAction($action);
-		
-		if (\Yii::$app->getRequest()->getMethod() === 'OPTIONS') {
-			\Yii::$app->response->format = Response::FORMAT_JSON;
-			\Yii::$app->getResponse()->content = (new Serializer())->serialize($this->getResponse($action, []));
-			//\Yii::$app->getResponse()->getHeaders()->set('Allow', 'POST GET PUT');
-			\Yii::$app->end();
-		}
-		
-		return true;
-	}
-	
-	public function afterAction($action, $result) {
-		return parent::afterAction($action, $this->getResponse($action, $result));
-	}
-	
-	private function getResponse($action, $result) : ApiResult {
-		$response = new ApiResult($action, $result);
-		if ($this->modelClass) {
-			$response->setModel(new $this->modelClass());
-		}
-		//\Yii::$app->response->format = Response::FORMAT_JSON;
-		return $response;
-	}
-	
-	//public function checkAccess($action, $model = null, $params = []) {
-	//	parent::checkAccess($action, $model, $params);
-	//}
+  public $user;
+
+  /**
+   * ApiController constructor.
+   * @param string $id
+   * @param        $module
+   * @param array  $config
+   */
+  public function __construct($id, $module, array $config = []) {
+    //if (\Yii::$app->getUser()->getIsGuest() &&
+    //	\Yii::$app->request->getPathInfo() !== \Yii::$app->params['loginUrl']) {
+    //	$this->redirect([\Yii::$app->params['loginUrl']]);
+    //}
+
+    parent::__construct($id, $module, $config);
+    $this->user = \Yii::$app->getUser()->getIdentity();
+  }
+
+  /**
+   * @param $action
+   * @return bool
+   * @throws \yii\base\ExitException
+   * @throws \yii\web\BadRequestHttpException
+   */
+  public function beforeAction($action): bool {
+    parent::beforeAction($action);
+
+    if (\Yii::$app->getRequest()->getMethod() === 'OPTIONS') {
+      \Yii::$app->response->format = Response::FORMAT_JSON;
+      \Yii::$app->getResponse()->content = (new Serializer())->serialize($this->getResponse($action, []));
+      //\Yii::$app->getResponse()->getHeaders()->set('Allow', 'POST GET PUT');
+      \Yii::$app->end();
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * @param       $action
+   * @param mixed $result
+   * @return mixed
+   */
+  public function afterAction($action, $result) {
+    return parent::afterAction($action, $this->getResponse($action, $result));
+  }
+
+  /**
+   * @param $action
+   * @param $result
+   * @return ApiResult
+   */
+  private function getResponse($action, $result): ApiResult {
+    $response = new ApiResult($action, $result);
+    if ($this->modelClass) {
+      $response->setModel(new $this->modelClass());
+    }
+    //\Yii::$app->response->format = Response::FORMAT_JSON;
+    return $response;
+  }
+
+  //public function checkAccess($action, $model = null, $params = []) {
+  //	parent::checkAccess($action, $model, $params);
+  //}
 }

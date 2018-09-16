@@ -4,6 +4,8 @@ namespace crudschool\modules\menu\controllers;
 
 use crudschool\api\ApiController;
 use http\Url;
+use yii\db\ActiveRecord;
+use yii\web\Controller;
 
 /**
  * Default controller for the `menu` module
@@ -84,9 +86,9 @@ class DefaultController extends ApiController {
 			$controller = new $class($fileInfo['filename'], $module_id);
 			$url = $this->basePath . '/' . $module_id . '/' . $name;
 			$result[$name] = [
-				'class' => $class,
 				'url' => $url,
-				'label' => '',
+				'label' => \Yii::t('app', $name),
+        'key' => $this->getPrimaryKey($controller),
 				'actions' => [
 					'index' => [
 						'url' => $url . self::INDEX_ACTION_URL,
@@ -113,4 +115,15 @@ class DefaultController extends ApiController {
 		}
 		return $result;
 	}
+	
+	private function getPrimaryKey(Controller $controller) {
+
+	  if (!$controller->modelClass) {
+	    return '';
+    }
+
+    /* @var ActiveRecord $model */
+    $model = new $controller->modelClass();
+	  return key($model->getPrimaryKey(true));
+  }
 }
