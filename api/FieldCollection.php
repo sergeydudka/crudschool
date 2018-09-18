@@ -97,6 +97,8 @@ class FieldCollection implements Arrayable {
     $field['rel'] = $this->relationships[$key] ?? FALSE;
     $field['label'] = $this->labels[$key] ?? FALSE;
     $field['required'] = $this->model->isAttributeRequired($column->name);
+    $field['type'] = $column->type;
+    $field['options'] = null;
 
     if ($field['rel'] && !$column->enumValues) {
       $rel = $field['rel']->getModel();
@@ -106,6 +108,10 @@ class FieldCollection implements Arrayable {
           $options = array_merge([0 => \Yii::t('app', 'not_set')], $options);
         }
         $field['options'] = $this->convertOptions($options);
+        $field['type'] = 'list';
+      } else {
+        $field['options'] = null;
+        $field['type'] = 'search';
       }
     } else {
       if ($column->enumValues) {
@@ -114,8 +120,10 @@ class FieldCollection implements Arrayable {
           $options = array_merge([0 => \Yii::t('app', 'not_set')], $options);
         }
         $field['options'] = $this->convertOptions($options);
+        $field['type'] = 'list';
       } else {
-        $field['options'] = $column->enumValues;
+        $field['options'] = null;
+        $field['type'] = 'list';
       }
     }
 
@@ -123,7 +131,6 @@ class FieldCollection implements Arrayable {
     $field['display'] = in_array($key, $this->displayFields);
     $field['name'] = $column->name;
     $field['allowNull'] = $column->allowNull;
-    $field['type'] = $column->type;
     $field['defaultValue'] = $this->getFieldDefaultValue($column);
     $field['size'] = $column->size;
     //$field['precision'] = $column->precision;

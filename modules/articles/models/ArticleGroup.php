@@ -110,9 +110,9 @@ class ArticleGroup extends RelationshipModel {
 	/**
 	 * @return array
 	 */
-	public static function getDropdown() {
+	/*public static function getDropdown() {
 		return ArrayHelper::map(self::find()->asArray(true)->all(), 'article_group_id', 'title');
-	}
+	}*/
 	
 	/**
 	 * @return \yii\db\ActiveQuery

@@ -40,9 +40,8 @@ abstract class ApiController extends BaseApiController {
    * @throws \yii\base\ExitException
    * @throws \yii\web\BadRequestHttpException
    */
-  public function beforeAction($action): bool {
+  public function beforeAction($action) {
     parent::beforeAction($action);
-
     if (\Yii::$app->getRequest()->getMethod() === 'OPTIONS') {
       \Yii::$app->response->format = Response::FORMAT_JSON;
       \Yii::$app->getResponse()->content = (new Serializer())->serialize($this->getResponse($action, []));
@@ -67,7 +66,7 @@ abstract class ApiController extends BaseApiController {
    * @param $result
    * @return ApiResult
    */
-  private function getResponse($action, $result): ApiResult {
+  private function getResponse($action, $result) {
     $response = new ApiResult($action, $result);
     if ($this->modelClass) {
       $response->setModel(new $this->modelClass());

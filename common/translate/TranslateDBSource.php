@@ -14,6 +14,7 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use yii\i18n\DbMessageSource;
 use yii\i18n\MissingTranslationEvent;
+use yii\web\Request;
 
 class TranslateDBSource extends DbMessageSource {
   private $_messages = [];
@@ -37,13 +38,19 @@ class TranslateDBSource extends DbMessageSource {
    */
   protected function loadMessagesFromDb($category, $language) {
     if (!$language || is_array($language)) {
-      $language = \Yii::$app->get('urlResolver')->getEdition()->code;
+      $language = \Yii::$app->request->getEdition()->code;
+    }
+
+    if (!$language || $language == $this->sourceLanguage) {
+      $translateQuery = "IFNULL(`$this->sourceLanguage`, `code`)";
+    } else {
+      $translateQuery = "IFNULL(`$language`, IFNULL(`$this->sourceLanguage`, `code`))";
     }
 
     $mainQuery = (new Query())->select([
       'code',
       'category',
-      'translate' => "IFNULL(`$language`, IFNULL(`$this->sourceLanguage`, `code`))",
+      'translate' => $translateQuery,
     ])->from($this->sourceMessageTable)->where([
       'category' => $category,
     ]);
@@ -86,6 +93,10 @@ class TranslateDBSource extends DbMessageSource {
     if (!isset($this->_messages[$key])) {
       $this->_messages[$key] = $this->loadMessages($category, $language);
     }
+    /*echo "<pre>";
+    var_dump($key, $message, $this->_messages, $language);
+    echo "</pre>";
+    die();*/
     if (isset($this->_messages[$key][$message]) && $this->_messages[$key][$message] !== '') {
       return $this->_messages[$key][$message];
     } else if (isset($this->_messages[$key][$message]) && $this->_messages[$key][$message] === '') {

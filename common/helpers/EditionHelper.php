@@ -15,7 +15,7 @@ class EditionHelper {
   /**
    * @return Edition
    */
-  public static function getDefaultEdition(): Edition {
+  public static function getDefaultEdition() {
     return Edition::find()->where(['code' => \Yii::$app->language])->limit(1)->one();
   }
 
@@ -23,15 +23,15 @@ class EditionHelper {
    * @param string $code
    * @return Edition
    */
-  public static function getEditionByCode($code): Edition {
+  public static function getEditionByCode($code) {
     return Edition::find()->where(['code' => $code])->limit(1)->one();
   }
 
   /**
    * @param string $url
-   * @return Edition
+   * @return Edition|null
    */
-  public static function getEditionByUrl($url): Edition {
+  public static function getEditionByUrl($url) {
     return Edition::find()->where(['url' => $url])->limit(1)->one();
   }
 }

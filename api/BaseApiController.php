@@ -18,25 +18,21 @@ use yii\web\Controller;
 use \Yii;
 
 class BaseApiController extends ActiveController {
-  /**
-   * @var Edition $edition
-   */
-  private $edition;
   public $dataFilter;
+  private $requestParams;
 
   /**
    * @throws \yii\base\InvalidConfigException
    */
   public function init() {
     parent::init();
-    $this->edition = \Yii::$app->urlResolver->getEdition();
   }
 
   /**
    * @return Edition
    */
-  public function getEdition(): Edition {
-    return $this->edition;
+  public function getEdition() {
+    return \Yii::$app->request->getEdition();
   }
 
   /**
@@ -56,18 +52,18 @@ class BaseApiController extends ActiveController {
    * @return BaseObject
    * @throws \yii\base\InvalidConfigException
    */
-  public function indexDataProvider($action, $filter): BaseObject {
+  public function indexDataProvider($action, $filter) {
     $requestParams = Yii::$app->getRequest()->getBodyParams();
     if (empty($requestParams)) {
       $requestParams = Yii::$app->getRequest()->getQueryParams();
     }
 
-    $filter = NULL;
-    if ($this->dataFilter !== NULL) {
+    $filter = null;
+    if ($this->dataFilter !== null) {
       $this->dataFilter = Yii::createObject($this->dataFilter);
       if ($this->dataFilter->load($requestParams)) {
         $filter = $this->dataFilter->build();
-        if ($filter === FALSE) {
+        if ($filter === false) {
           return $this->dataFilter;
         }
       }
@@ -104,8 +100,8 @@ class BaseApiController extends ActiveController {
     $model = new $this->modelClass;
     if ($model instanceof AngularModelInterface) {
       $displayFields = $model->getDisplayFields();
-      return $displayFields[get_class($action)] ?? FALSE;
+      return $displayFields[get_class($action)] ?? false;
     }
-    return FALSE;
+    return false;
   }
 }

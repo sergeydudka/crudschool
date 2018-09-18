@@ -10,5 +10,5 @@ class Module extends \yii\base\Module {
 	 * {@inheritdoc}
 	 */
 	public $controllerNamespace = 'crudschool\modules\translations\controllers';
-	public $defaultRoute = 'default';
+	public $defaultRoute = 'translation';
 }

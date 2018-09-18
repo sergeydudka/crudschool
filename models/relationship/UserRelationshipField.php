@@ -16,7 +16,7 @@ class UserRelationshipField extends RelationshipField {
 	public function __construct() {
 		parent::__construct([
 			'model' => User::class,
-			'field' => 'updated_by',
+			'field' => 'user_id',
 			'label' => 'username',
 			'method' => 'updated'
 		]);

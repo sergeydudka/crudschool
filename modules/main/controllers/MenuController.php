@@ -60,7 +60,7 @@ class MenuController extends ApiController {
 
     $url = \yii\helpers\Url::base(true);
 
-    $editionUrl = \Yii::$app->urlResolver->getEditionUrl();
+    $editionUrl = \Yii::$app->request->getEditionUrl();
     if ($editionUrl) {
       $url = trim(strtr($url, ["/$editionUrl" => '/']), '/');
     }
@@ -72,8 +72,8 @@ class MenuController extends ApiController {
         continue;
       }
       $module = $this->createClass($module);
-
-      $result[$id] = $this->getControllers($id, $module->controllerNamespace, (new \ReflectionClass($module))->getFileName());
+      $module->id = $id;
+      $result[$id] = $this->getControllers($module, $module->controllerNamespace, (new \ReflectionClass($module))->getFileName());
     }
     return $result;
   }
@@ -87,12 +87,12 @@ class MenuController extends ApiController {
   }
 
   /**
-   * @param string $module_id
+   * @param $module_id
    * @param string $controllerNamespace
    * @param string $path
    * @return array
    */
-  private function getControllers($module_id, $controllerNamespace, $path) {
+  private function getControllers($module, $controllerNamespace, $path) {
     $realPath = realpath(dirname($path) . DIRECTORY_SEPARATOR . 'controllers');
     $result = [];
 
@@ -100,8 +100,10 @@ class MenuController extends ApiController {
       return $result;
     }
 
-    $result['label'] = \Yii::t('app', $module_id);
-    $result['url'] = $this->basePath . '/' . $module_id;
+    $result['label'] = \Yii::t('app', $module->id);
+    $result['url'] = $this->basePath . '/' . $module->id;
+    $result['default'] = $result['url'] . '/' . $module->defaultRoute;
+    $result['defaultRoute'] = $module->defaultRoute;
     $result['list'] = [];
 
     foreach (scandir($realPath) as $fileName) {
@@ -119,12 +121,12 @@ class MenuController extends ApiController {
 
       $class = $controllerNamespace . '\\' . $fileInfo['filename'];
 
-      $controller = new $class($fileInfo['filename'], $module_id);
-      $url = $this->basePath . '/' . $module_id . '/' . $name;
+      $controller = new $class($fileInfo['filename'], $module->id);
+      $url = $this->basePath . '/' . $module->id . '/' . $name;
       $result['list'][$name] = [
         'url' => $url,
         'label' => \Yii::t('app', $name),
-        'primnaryKey' => $this->getPrimaryKey($controller),
+        'primaryKey' => $this->getPrimaryKey($controller),
         'actions' => [
           'index'  => [
             'url'    => $url . ActionHelper::INDEX_ACTION_URL,

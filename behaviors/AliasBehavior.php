@@ -48,9 +48,9 @@ class AliasBehavior extends Behavior {
   /**
    *
    */
-  public function saveAlias(): void {
+  public function saveAlias() {
     if ($this->alias) {
-      $this->alias->ref_id = $this->owner->getPrimaryKey(FALSE);
+      $this->alias->ref_id = $this->owner->getPrimaryKey(false);
       $this->alias->save();
     }
   }
@@ -58,17 +58,17 @@ class AliasBehavior extends Behavior {
   /**
    * @return bool
    */
-  public function setAlias(): bool {
+  public function setAlias() {
     $aliasID = $this->owner->alias_id;
     $code = trim($this->getPostAlias());
-    $newCode = FALSE;
+    $newCode = false;
     if (!$code && $this->from && $this->owner[$this->from]) {
       $code = \crudschool\common\helpers\Transliteration::text($this->owner[$this->from], '-');
 
       $code = strtolower($code);
-      $newCode = TRUE;
+      $newCode = true;
     }
-    $alias = NULL;
+    $alias = null;
 
     if ($aliasID) {
       $alias = Alias::findOne(['alias_id' => $aliasID]);
@@ -78,7 +78,7 @@ class AliasBehavior extends Behavior {
         if ($alias && !$newCode) {
           $this->owner->addError($this->aliasField, "Code $code has already been taken by model " .
             get_class($this->owner) . ".");
-          return FALSE;
+          return false;
         } else {
           if ($alias) {
             $code = '' . time();
@@ -95,34 +95,34 @@ class AliasBehavior extends Behavior {
       }
     }
 
-    $alias->ref_id = $this->owner->getPrimaryKey(FALSE);
+    $alias->ref_id = $this->owner->getPrimaryKey(false);
 
     $result = $alias->save();
 
     if (!$result) {
       $this->owner->addError($this->aliasField, implode('<br>', $alias->getFirstErrors()));
-      return FALSE;
+      return false;
     }
 
     $this->owner->alias_id = $alias->alias_id;
 
     $this->alias = $alias;
 
-    return TRUE;
+    return true;
   }
 
   /**
    * @param string $code
    * @return Alias
    */
-  public function createAlias($code): Alias {
+  public function createAlias($code) {
     return Alias::setAlias($this->getRefID(), get_class($this->owner), $code);
   }
 
   /**
    * @return string
    */
-  public function getAlias(): string {
+  public function getAlias() {
     return Alias::findOne(['alias_id' => $this->owner->alias_id])->code;
   }
 
@@ -130,7 +130,7 @@ class AliasBehavior extends Behavior {
    * @return string
    * @throws \ReflectionException
    */
-  private function getPostAlias(): string {
+  private function getPostAlias() {
     $post = \Yii::$app->request->post();
     $className = (new \ReflectionClass($this->owner))->getShortName();
     return $post[$className][$this->aliasField] ?? '';
