@@ -68,9 +68,6 @@ class TranslateDBSource extends DbMessageSource {
     return ArrayHelper::map($messages, 'code', 'translate');
   }
 
-  public static function format() {
-  }
-
   public function onMissingTranslation(MissingTranslationEvent $event): MissingTranslationEvent {
     $model = new Translation();
 
@@ -93,10 +90,7 @@ class TranslateDBSource extends DbMessageSource {
     if (!isset($this->_messages[$key])) {
       $this->_messages[$key] = $this->loadMessages($category, $language);
     }
-    /*echo "<pre>";
-    var_dump($key, $message, $this->_messages, $language);
-    echo "</pre>";
-    die();*/
+    
     if (isset($this->_messages[$key][$message]) && $this->_messages[$key][$message] !== '') {
       return $this->_messages[$key][$message];
     } else if (isset($this->_messages[$key][$message]) && $this->_messages[$key][$message] === '') {
@@ -115,4 +109,40 @@ class TranslateDBSource extends DbMessageSource {
 
     return $this->_messages[$key][$message] = $message;
   }
+
+    /**
+     * Formats a message using [[MessageFormatter]].
+     *
+     * @param string $message the message to be formatted.
+     * @param array $params the parameters that will be used to replace the corresponding placeholders in the message.
+     * @param string $language the language code (e.g. `en-US`, `en`).
+     * @return string the formatted message.
+     */
+    public function format($message, $params, $language)
+    {
+        $params = (array) $params;
+        if ($params === []) {
+            return $message;
+        }
+
+        if (preg_match('~{\s*[\w.]+\s*,~u', $message)) {
+            $formatter = $this->getMessageFormatter();
+            $result = $formatter->format($message, $params, $language);
+            if ($result === false) {
+                $errorMessage = $formatter->getErrorMessage();
+                Yii::warning("Formatting message for language '$language' failed with error: $errorMessage. The message being formatted was: $message.", __METHOD__);
+
+                return $message;
+            }
+
+            return $result;
+        }
+
+        $p = [];
+        foreach ($params as $name => $value) {
+            $p['{' . $name . '}'] = $value;
+        }
+
+        return strtr($message, $p);
+    }
 }

@@ -123,7 +123,6 @@ class FieldCollection implements Arrayable {
         $field['type'] = 'list';
       } else {
         $field['options'] = null;
-        $field['type'] = 'list';
       }
     }
 
