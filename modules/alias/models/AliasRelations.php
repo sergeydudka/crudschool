@@ -11,32 +11,32 @@ use crudschool\models\BaseModel;
  * @property int $rel_id
  */
 class AliasRelations extends BaseModel {
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function tableName() {
-		return 'alias_relations';
-	}
-	
-	/**
-	 * {@inheritdoc}
-	 */
-	public function rules() {
-		return [
-			[['alias_id', 'rel_id'], 'required'],
-			[['alias_id', 'rel_id'], 'integer'],
-			[['alias_id'], 'unique'],
-			[['rel_id'], 'unique'],
-		];
-	}
-	
-	/**
-	 * {@inheritdoc}
-	 */
-	public function attributeLabels() {
-		return [
-			'alias_id' => 'Alias ID',
-			'rel_id' => 'Rel Alias ID',
-		];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName() {
+        return 'alias_relations';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules() {
+        return [
+            [['alias_id', 'rel_id'], 'required'],
+            [['alias_id', 'rel_id'], 'integer'],
+            [['alias_id'], 'unique'],
+            [['rel_id'], 'unique'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels() {
+        return [
+            'alias_id' => $this->t('alias_id'),
+            'rel_id'   => $this->t('rel_id'),
+        ];
+    }
 }

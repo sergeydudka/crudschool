@@ -13,13 +13,14 @@ use crudschool\models\RelationshipField;
 use crudschool\modules\articles\models\Difficult;
 
 class DifficultRelationshipField extends RelationshipField {
-	public function __construct() {
+	public function __construct($difficultType) {
 		parent::__construct([
 			'model' => Difficult::class,
 			'field' => 'difficult_id',
+            'type' => self::HAS_ONE_REL,
 			'label' => 'title',
 			'method' => 'difficult',
-			'params' => [Difficult::TYPE_ARTICLE_DIFFICULT],
+			'params' => [$difficultType],
 		]);
 	}
 }

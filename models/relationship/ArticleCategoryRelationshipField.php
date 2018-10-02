@@ -17,6 +17,7 @@ class ArticleCategoryRelationshipField extends RelationshipField {
 		parent::__construct([
 			'model' => ArticleCategory::class,
 			'field' => 'article_category_id',
+            'type' => self::HAS_ONE_REL,
 			'label' => 'title',
 			'method' => 'articleCategory'
 		]);

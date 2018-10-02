@@ -9,23 +9,17 @@
 namespace crudschool\api;
 
 use crudschool\api\data\DataSelect;
-use crudschool\common\edition\Edition;
 use crudschool\common\helpers\JSONHelper;
-use crudschool\interfaces\AngularModelInterface;
-use crudschool\interfaces\AngularViewInterface;
-use crudschool\modules\languages\helpers\SystemLanguage;
+use crudschool\common\url\Request;
+use crudschool\modules\editions\models\Edition;
 use yii\base\BaseObject;
-use yii\base\InvalidArgumentException;
 use yii\data\ActiveDataProvider;
 use yii\data\DataFilter;
 use yii\rest\ActiveController;
-use yii\web\Controller;
 use \Yii;
 
 class BaseApiController extends ActiveController {
     public $dataFilter;
-    private $requestParams;
-    private $filter = [];
 
     /**
      * @throws \yii\base\InvalidConfigException
@@ -36,9 +30,14 @@ class BaseApiController extends ActiveController {
 
     /**
      * @return Edition
+     * @throws \yii\base\InvalidConfigException
      */
     public function getEdition() {
-        return \Yii::$app->request->getEdition();
+        /**
+         * @var Request $request;
+         */
+        $request =  \Yii::$app->request;
+        return $request->getEdition();
     }
 
     /**
@@ -71,11 +70,12 @@ class BaseApiController extends ActiveController {
             $select = $dataSelect->build($model);
         }
 
-        $filter = new DataFilter();
-        $filterParams = JSONHelper::parse($requestParams[$filter->filterAttributeName], true);
-        if ($filterParams && $filter->load([$filter->filterAttributeName => $filterParams], '')) {
-            $filter->setSearchModel($model);
-            $filter = $filter->build();
+        $dataFilter = new DataFilter();
+        $filter = false;
+        $filterParams = JSONHelper::parse($requestParams[$dataFilter->filterAttributeName], true);
+        if ($filterParams && $dataFilter->load([$dataFilter->filterAttributeName => $filterParams], '')) {
+            $dataFilter->setSearchModel($model);
+            $filter = $dataFilter->build();
         }
 
 

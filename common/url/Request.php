@@ -11,7 +11,7 @@ namespace crudschool\common\url;
 
 use crudschool\common\helpers\EditionHelper;
 use crudschool\modules\editions\models\Edition;
-use crudschool\modules\languages\common\Language;
+use yii\base\InvalidConfigException;
 
 class Request extends \yii\web\Request {
   private $pathInfo = '';

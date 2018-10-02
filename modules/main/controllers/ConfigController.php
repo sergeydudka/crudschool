@@ -14,39 +14,39 @@ use crudschool\common\helpers\ActionHelper;
 use crudschool\common\helpers\ResponseHelper;
 
 class ConfigController extends ApiController {
-  /**
-   * @var string
-   */
-  public $modelClass = '';
+    /**
+     * @var string
+     */
+    public $modelClass = '';
 
-  /**
-   * @return array
-   */
-  public function actions() {
-    $actions = parent::actions();
-    unset($actions['delete'], $actions['create'], $actions['update']);
+    /**
+     * @return array
+     */
+    public function actions() {
+        $actions = parent::actions();
+        unset($actions['delete'], $actions['create'], $actions['update']);
 
-    $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
 
-    return $actions;
-  }
+        return $actions;
+    }
 
-  /**
-   * @return array
-   */
-  public function prepareDataProvider() {
-    ResponseHelper::setJSONResponseFormat();
-    
-    $result = \Yii::$app->params;
+    /**
+     * @return array
+     */
+    public function prepareDataProvider() {
+        ResponseHelper::setJSONResponseFormat();
 
-    $result['action'] = [
-      ActionHelper::INDEX_ACTION_NAME => ActionHelper::INDEX_ACTION_URL,
-      ActionHelper::VIEW_ACTION_NAME => ActionHelper::VIEW_ACTION_URL,
-      ActionHelper::UPDATE_ACTION_NAME => ActionHelper::UPDATE_ACTION_URL,
-      ActionHelper::CREATE_ACTION_NAME => ActionHelper::CREATE_ACTION_URL,
-      ActionHelper::DELETE_ACTION_NAME => ActionHelper::DELETE_ACTION_URL,
-    ];
+        $result = \Yii::$app->params;
 
-    return $result;
-  }
+        $result['action'] = [
+            ActionHelper::INDEX_ACTION_NAME  => ActionHelper::INDEX_ACTION_URL,
+            ActionHelper::VIEW_ACTION_NAME   => ActionHelper::VIEW_ACTION_URL,
+            ActionHelper::UPDATE_ACTION_NAME => ActionHelper::UPDATE_ACTION_URL,
+            ActionHelper::CREATE_ACTION_NAME => ActionHelper::CREATE_ACTION_URL,
+            ActionHelper::DELETE_ACTION_NAME => ActionHelper::DELETE_ACTION_URL,
+        ];
+
+        return $result;
+    }
 }

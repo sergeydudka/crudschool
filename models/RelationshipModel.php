@@ -11,7 +11,6 @@ namespace crudschool\models;
 
 use crudschool\interfaces\RelationshipInteface;
 use yii\base\InvalidConfigException;
-use yii\db\ActiveRecord;
 use yii\rest\ActiveController;
 
 abstract class RelationshipModel extends BaseModel implements RelationshipInteface {
@@ -24,7 +23,7 @@ abstract class RelationshipModel extends BaseModel implements RelationshipIntefa
 		}
 		
 		$class = get_called_class();
-		
+
 		if ($class != \Yii::$app->controller->modelClass) {
 			return;
 		}
@@ -33,9 +32,19 @@ abstract class RelationshipModel extends BaseModel implements RelationshipIntefa
 		
 		foreach ($class::relationships() as $attribute => $relationship) {
 			if ($relationship instanceof RelationshipField) {
-				$this->$attribute = $this->{$relationship->getMethod()};
-			} else if ($this->hasAttribute($attribute)) {
-				$this->$attribute = $this->$relationship;
+			    if ($relationship->getType() === RelationshipField::HAS_MANY_REL) {
+                    $this->$attribute = $this->hasMany($relationship->getModel(),
+                        [
+                            $relationship->getField() => $attribute
+                        ]
+                    )->asArray()->all();
+                } else {
+                    $this->$attribute = $this->hasOne($relationship->getModel(),
+                        [
+                            $relationship->getField() => $attribute
+                        ]
+                    )->limit(1)->asArray()->one();
+                }
 			} else {
 				throw new InvalidConfigException('Getting unknown property: ' . $class . '::' . $attribute . '.');
 			}

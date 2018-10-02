@@ -10,36 +10,102 @@ namespace crudschool\models;
 
 
 use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 
 class RelationshipField extends BaseObject {
+
+    const HAS_ONE_REL = 'hasOne';
+    const HAS_MANY_REL = 'hasMany';
+
+    /**
+     * @var string
+     */
 	public $field;
+
+    /**
+     * @var string
+     */
 	public $label;
+
+    /**
+     * @var string
+     */
 	public $model;
+
+    /**
+     * @var string
+     */
+    public $type;
+
+    /**
+     * @var string
+     */
 	public $method;
+
+    /**
+     * @var array
+     */
 	public $params;
-	
-	public function __construct($config = []) {
+
+    /**
+     * @var array
+     */
+    public $config;
+
+    /**
+     * RelationshipField constructor.
+     * @param array $config
+     */
+    public function __construct($config = []) {
 		parent::__construct($config);
-	}
-	
-	
-	public function getField() {
+
+		if (!$this->type || ($this->type != self::HAS_ONE_REL && $this->type != self::HAS_MANY_REL)) {
+		    throw new InvalidConfigException("Type must be '" . self::HAS_ONE_REL . "' or '" . self::HAS_MANY_REL . "'. $this->type present");
+        }
+
+        $this->config = $config;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getField() {
 		return $this->field;
 	}
-	
-	public function getLabel() {
+
+    /**
+     * @return string
+     */
+    public function getLabel() {
 		return $this->label;
 	}
-	
-	public function getModel() {
+
+    /**
+     * @return string
+     */
+    public function getModel() {
 		return $this->model;
 	}
-	
-	public function getMethod() {
+
+    /**
+     * @return string
+     */
+    public function getMethod() {
 		return $this->method;
 	}
-	
-	public function getParams() {
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return $this->type;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams() {
 		return $this->params ? $this->params : [];
 	}
 }

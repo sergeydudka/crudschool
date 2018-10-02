@@ -3,21 +3,16 @@
 namespace crudschool\modules\articles\models;
 
 use crudschool\behaviors\AliasBehavior;
+use crudschool\behaviors\EditionalBehavior;
 use crudschool\behaviors\HTMLEncodeBehavior;
 use crudschool\behaviors\TimestampBehavior;
 use crudschool\models\relationship\AliasRelationshipField;
 use crudschool\models\relationship\ArticleGroupRelationshipField;
 use crudschool\models\relationship\DifficultRelationshipField;
 use crudschool\models\relationship\UserRelationshipField;
-use crudschool\models\RelationshipField;
 use crudschool\models\RelationshipModel;
-use crudschool\modules\alias\models\Alias;
 use crudschool\modules\editions\models\Edition;
 use crudschool\behaviors\BlameableBehavior;
-use crudschool\modules\users\models\User;
-use yii\rest\CreateAction;
-use yii\rest\IndexAction;
-use yii\rest\UpdateAction;
 
 /**
  * This is the model class for table "article".
@@ -65,6 +60,9 @@ class Article extends RelationshipModel {
         'class' => AliasBehavior::class,
         'from'  => 'title',
       ],
+      EditionalBehavior::class => [
+          'class' => EditionalBehavior::class,
+      ]
     ];
   }
 
@@ -112,34 +110,9 @@ class Article extends RelationshipModel {
     ];
   }
 
-  /**
-   * @return \yii\db\ActiveQuery
-   */
-  public function getArticleGroup() {
-    return $this->hasOne(ArticleGroup::class, ['article_group_id' => 'article_group_id']);
-  }
-
-  /**
-   * @return \yii\db\ActiveQuery
-   */
-  public function getDifficult() {
-    return $this->hasOne(Difficult::class, [
-      'difficult_id' => 'difficult_id',
-    ]);
-  }
-
-  /**
-   * @return \yii\db\ActiveQuery
-   */
-  public function getEdition() {
-    return $this->hasOne(Edition::class, [
-      'edition_id' => 'edition_id',
-    ]);
-  }
-
   public static function relationships() {
     return [
-      'difficult_id'     => new DifficultRelationshipField(),
+      'difficult_id'     => new DifficultRelationshipField(Difficult::TYPE_ARTICLE_DIFFICULT),
       'article_group_id' => new ArticleGroupRelationshipField(),
       'created_by'       => new UserRelationshipField(),
       'updated_by'       => new UserRelationshipField(),

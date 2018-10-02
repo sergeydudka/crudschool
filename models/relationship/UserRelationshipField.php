@@ -17,6 +17,7 @@ class UserRelationshipField extends RelationshipField {
 		parent::__construct([
 			'model' => User::class,
 			'field' => 'user_id',
+            'type' => self::HAS_ONE_REL,
 			'label' => 'username',
 			'method' => 'updated'
 		]);

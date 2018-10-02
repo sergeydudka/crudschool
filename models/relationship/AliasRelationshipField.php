@@ -17,6 +17,7 @@ class AliasRelationshipField extends RelationshipField {
 			'model' => Alias::class,
 			'field' => 'alias_id',
 			'label' => 'code',
+			'type' => self::HAS_ONE_REL,
 			'method' => 'alias'
 		]);
 	}
