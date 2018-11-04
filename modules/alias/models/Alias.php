@@ -9,7 +9,7 @@ use crudschool\models\BaseModel;
  * This is the model class for table "alias".
  *
  * @property int    $alias_id
- * @property int    $language_id
+ * @property int    $edition_id
  * @property int    $ref_id
  * @property string $ref_model
  * @property string $code
@@ -27,7 +27,7 @@ class Alias extends BaseModel {
      */
     public function rules() {
         return [
-            [['alias_id', 'language_id', 'ref_id'], 'integer'],
+            [['alias_id', 'edition_id', 'ref_id'], 'integer'],
             [['ref_model', 'code'], 'string', 'max' => 256],
         ];
     }
