@@ -10,6 +10,7 @@ namespace crudschool\common\url;
 
 
 use crudschool\common\helpers\EditionHelper;
+use crudschool\common\helpers\UrlHelper;
 use crudschool\modules\editions\models\Edition;
 use function GuzzleHttp\Psr7\mimetype_from_extension;
 use yii\base\InvalidConfigException;
@@ -29,7 +30,7 @@ class Request extends \yii\web\Request {
 
         $mimeType = mimetype_from_extension(Response::FORMAT_HTML);
         
-        if ($mimeType && in_array($mimeType, $accept)) {
+        if (!UrlHelper::isDevModuleUrl($this->url) && $mimeType && in_array($mimeType, $accept)) {
             $this->url = $this->baseUrl;
         }
 
