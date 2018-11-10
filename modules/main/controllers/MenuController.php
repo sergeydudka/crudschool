@@ -103,8 +103,9 @@ class MenuController extends ApiController {
         }
 
         $result['label'] = \Yii::t('app', $module->id);
-        $result['url'] = $this->basePath . '/' . $module->id;
-        $result['default'] = $result['url'] . '/' . $module->defaultRoute;
+        $result['url'] = '/' . $module->id;
+        $result['moduleUrl'] = '/' . $module->id;
+        $result['default'] = $result['moduleUrl'] . '/' . $module->defaultRoute;
         $result['defaultRoute'] = $module->defaultRoute;
         $result['list'] = [];
 
@@ -124,7 +125,7 @@ class MenuController extends ApiController {
             $class = $controllerNamespace . '\\' . $fileInfo['filename'];
 
             $controller = new $class($fileInfo['filename'], $module->id);
-            $url = $this->basePath . '/' . $module->id . '/' . $name;
+            $url = $result['moduleUrl'] . '/' . $name;
             $result['list'][$name] = [
                 'url'        => $url,
                 'label'      => \Yii::t('app', $name),

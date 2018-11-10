@@ -12,6 +12,8 @@ namespace crudschool\modules\main\controllers;
 use crudschool\api\ApiController;
 use crudschool\common\helpers\ActionHelper;
 use crudschool\common\helpers\ResponseHelper;
+use crudschool\common\url\Request;
+use http\Url;
 
 class ConfigController extends ApiController {
     /**
@@ -46,6 +48,12 @@ class ConfigController extends ApiController {
             ActionHelper::CREATE_ACTION_NAME => ActionHelper::CREATE_ACTION_URL,
             ActionHelper::DELETE_ACTION_NAME => ActionHelper::DELETE_ACTION_URL,
         ];
+
+        /* @var Request $request */
+        $request = \Yii::$app->request;
+        $result['edition'] = $request->getEdition();
+
+        $result['baseUrl'] = \yii\helpers\Url::base(true);
 
         return $result;
     }

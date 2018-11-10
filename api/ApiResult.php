@@ -37,8 +37,9 @@ class ApiResult extends BaseObject {
     /**
      * @param ActiveRecord $model
      */
-    public function setModel(ActiveRecord $model): void {
-        $this->fields = new FieldCollection($model);
+    public function setModel(ActiveRecord $model) {
+        $fieldsCollection = new FieldCollection($model);
+        $this->fields = $fieldsCollection->fields;
         $this->errors = $model->getErrors();
         $this->status = !$this->errors;
     }
@@ -46,7 +47,7 @@ class ApiResult extends BaseObject {
     /**
      * @return string
      */
-    public function __toString(): string {
+    public function __toString() {
         return json_encode($this); // TODO: убрать костыль
     }
 }

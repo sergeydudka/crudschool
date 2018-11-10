@@ -14,19 +14,6 @@ use yii\filters\VerbFilter;
  */
 class AliasController extends ApiController {
 	public $modelClass = 'crudschool\modules\alias\models\Alias';
-	/**
-	 * {@inheritdoc}
-	 */
-	public function behaviors() {
-		return [
-			'verbs' => [
-				'class' => VerbFilter::class,
-				'actions' => [
-					'delete' => ['POST'],
-				],
-			],
-		];
-	}
 	
 	/**
 	 * Lists all Alias models.
