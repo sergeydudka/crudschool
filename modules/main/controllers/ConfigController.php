@@ -13,7 +13,6 @@ use crudschool\api\ApiController;
 use crudschool\common\helpers\ActionHelper;
 use crudschool\common\helpers\ResponseHelper;
 use crudschool\common\helpers\UrlHelper;
-use crudschool\common\url\Request;
 
 class ConfigController extends ApiController {
     /**
