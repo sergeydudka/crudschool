@@ -16,20 +16,6 @@ class TranslationController extends ApiController {
 	public $modelClass = 'crudschool\modules\translations\models\Translation';
 	
 	/**
-	 * {@inheritdoc}
-	 */
-	public function behaviors() {
-		return [
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'delete' => ['POST'],
-				],
-			],
-		];
-	}
-	
-	/**
 	 * Lists all Translation models.
 	 * @return mixed
 	 */

@@ -16,20 +16,6 @@ class ArticleGroupController extends ApiController {
 	public $modelClass = 'crudschool\modules\articles\models\ArticleGroup';
 	
 	/**
-	 * {@inheritdoc}
-	 */
-	public function behaviors() {
-		return [
-			'verbs' => [
-				'class' => VerbFilter::class,
-				'actions' => [
-					'delete' => ['POST'],
-				],
-			],
-		];
-	}
-	
-	/**
 	 * Lists all ArticleGroup models.
 	 * @return mixed
 	 */

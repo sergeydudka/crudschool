@@ -62,6 +62,7 @@ class AliasBehavior extends Behavior {
      */
     public function setAlias() {
         $aliasID = $this->owner->alias_id;
+
         $code = trim($this->getPostAlias());
         $newCode = false;
         if (!$code && $this->from && $this->owner[$this->from]) {
@@ -71,6 +72,10 @@ class AliasBehavior extends Behavior {
             $newCode = true;
         }
         $alias = null;
+
+        if (is_array($aliasID) && array_key_exists('alias_id', $aliasID)) {
+            $aliasID = $aliasID['alias_id'];
+        }
 
         if ($aliasID) {
             $alias = Alias::findOne(['alias_id' => $aliasID]);
@@ -91,10 +96,8 @@ class AliasBehavior extends Behavior {
 
         if ($alias && $code) {
             $alias->code = $code;
-        } else {
-            if ($code) {
-                $alias = $this->createAlias($code);
-            }
+        } else if ($code) {
+            $alias = $this->createAlias($code);
         }
 
         $alias->ref_id = $this->owner->getPrimaryKey(false);

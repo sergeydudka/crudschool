@@ -14,19 +14,6 @@ use yii\filters\VerbFilter;
  */
 class DifficultController extends ApiController {
 	public $modelClass = 'crudschool\modules\articles\models\Difficult';
-	/**
-	 * {@inheritdoc}
-	 */
-	public function behaviors() {
-		return [
-			'verbs' => [
-				'class' => VerbFilter::class,
-				'actions' => [
-					'delete' => ['POST'],
-				],
-			],
-		];
-	}
 	
 	/**
 	 * Lists all Difficult models.

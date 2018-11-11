@@ -13,6 +13,7 @@ use crudschool\api\ApiController;
 use crudschool\common\helpers\AccessHelper;
 use crudschool\common\helpers\ActionHelper;
 use crudschool\common\helpers\ResponseHelper;
+use crudschool\common\helpers\UrlHelper;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 use yii\web\Controller;
@@ -60,13 +61,7 @@ class MenuController extends ApiController {
     public function prepareDataProvider() {
         ResponseHelper::setJSONResponseFormat();
 
-        $url = \yii\helpers\Url::base(true);
-
-        $editionUrl = \Yii::$app->request->getEditionUrl();
-        if ($editionUrl) {
-            $url = trim(strtr($url, ["/$editionUrl" => '/']), '/');
-        }
-        $this->basePath = $url;
+        $this->basePath = UrlHelper::getBasePath();
 
         $result = [];
         foreach (\Yii::$app->getModules() as $id => $module) {
@@ -103,8 +98,9 @@ class MenuController extends ApiController {
         }
 
         $result['label'] = \Yii::t('app', $module->id);
-        $result['url'] = $this->basePath . '/' . $module->id;
-        $result['default'] = $result['url'] . '/' . $module->defaultRoute;
+        $result['url'] = '/' . $module->id;
+        $result['moduleUrl'] = '/' . $module->id;
+        $result['default'] = $result['moduleUrl'] . '/' . $module->defaultRoute;
         $result['defaultRoute'] = $module->defaultRoute;
         $result['list'] = [];
 
@@ -124,7 +120,7 @@ class MenuController extends ApiController {
             $class = $controllerNamespace . '\\' . $fileInfo['filename'];
 
             $controller = new $class($fileInfo['filename'], $module->id);
-            $url = $this->basePath . '/' . $module->id . '/' . $name;
+            $url = $result['moduleUrl'] . '/' . $name;
             $result['list'][$name] = [
                 'url'        => $url,
                 'label'      => \Yii::t('app', $name),
