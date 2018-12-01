@@ -8,6 +8,8 @@ use yii\base\Action;
 use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
+use yii\rest\ActiveController;
+use yii\rest\Controller;
 use yii\rest\CreateAction;
 use yii\rest\DeleteAction;
 use yii\rest\UpdateAction;
@@ -24,29 +26,27 @@ class ApiResult extends BaseObject {
     /**
      * ApiResult constructor.
      * @param ActiveDataProvider|array $result
-     * @param Action                   $action
+     * @param ActiveController         $controller
      */
-    public function __construct($action, $result) {
+    public function __construct($controller, $result) {
         parent::__construct();
-        $this->action = $action;
+        $this->action = $controller->action;
         $this->result = new Result($result);
-        $this->errors = (is_object($result) && method_exists($result, 'getErrors')) ? $result->getErrors() : false;
+        $this->errors = $this->result->getErrors();
         $this->status = !$this->errors;
+        $this->statusCode = $result->status ?? 200;
+        if ($controller->modelClass) {
+            $this->setModel(\Yii::createObject($controller->modelClass));
+        }
     }
 
     /**
      * @param ActiveRecord $model
      */
-    public function setModel(ActiveRecord $model): void {
-        $this->fields = new FieldCollection($model);
+    private function setModel(ActiveRecord $model) {
+        $fieldsCollection = new FieldCollection($model);
+        $this->fields = $fieldsCollection->fields;
         $this->errors = $model->getErrors();
         $this->status = !$this->errors;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string {
-        return json_encode($this); // TODO: убрать костыль
     }
 }

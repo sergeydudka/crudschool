@@ -16,7 +16,9 @@ use yii\rest\ActiveController;
 abstract class RelationshipModel extends BaseModel implements RelationshipInteface {
 	
 	public function afterFind() {
-		parent::afterFind();
+		if (!parent::afterFind()) {
+		    return false;
+		}
 		
 		if (\Yii::$app->id != 'backend' || !(\Yii::$app->controller instanceof ActiveController)) {
 			return;
@@ -25,7 +27,7 @@ abstract class RelationshipModel extends BaseModel implements RelationshipIntefa
 		$class = get_called_class();
 
 		if ($class != \Yii::$app->controller->modelClass) {
-			return;
+			return true;
 		}
 		
 		/* @var $class RelationshipInteface*/
@@ -49,5 +51,32 @@ abstract class RelationshipModel extends BaseModel implements RelationshipIntefa
 				throw new InvalidConfigException('Getting unknown property: ' . $class . '::' . $attribute . '.');
 			}
 		}
+        return true;
 	}
+
+	public function beforeSave($insert) {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if (\Yii::$app->id != 'backend' || !(\Yii::$app->controller instanceof ActiveController)) {
+            return true;
+        }
+
+        $class = get_called_class();
+
+        foreach ($class::relationships() as $attribute => $relationship) {
+            if ($relationship instanceof RelationshipField) {
+                $field = $relationship->getField();
+
+                if (is_array($attribute)) {
+                    $this->$attribute = $this->$attribute[$field];
+                }
+
+            } else {
+                throw new InvalidConfigException('Getting unknown property: ' . $class . '::' . $attribute . '.');
+            }
+        }
+        return true;
+    }
 }

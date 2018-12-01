@@ -28,6 +28,7 @@ class BaseModel extends ActiveModel implements AngularViewInterface {
         $this->setHiddenFields(ViewAction::class, 'language_id');
         $this->setHiddenFields(ViewAction::class, 'created_at');
         $this->setHiddenFields(ViewAction::class, 'updated_at');
+        $this->setHiddenFields(ViewAction::class, 'edition_id');
 
         /* CreateAction hiddenFields*/
         /*$this->setHiddenFields(CreateAction::class, 'created_by');

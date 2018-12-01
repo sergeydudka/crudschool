@@ -8,7 +8,7 @@
 
 namespace crudschool\modules\main;
 
-class Module extends \yii\base\Module {
+class Module extends \crudschool\api\Module {
   public $controllerNamespace = 'crudschool\modules\main\controllers';
   public $defaultRoute = 'auth';
 }

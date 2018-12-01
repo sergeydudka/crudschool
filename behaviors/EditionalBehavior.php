@@ -20,6 +20,7 @@ class EditionalBehavior extends Behavior {
     public function events() {
         return [
             ActiveModel::EVENT_BEFORE_FIND => 'addEditionToQuery',
+            ActiveModel::EVENT_BEFORE_INSERT => 'addEditionToModel',
         ];
     }
     
@@ -34,5 +35,16 @@ class EditionalBehavior extends Behavior {
 
         $query = $this->owner::getCurrentQuery();
         $query->andWhere(['edition_id' => $edition->edition_id]);
+    }
+
+    public function addEditionToModel() {
+        if (!$this->owner->hasProperty('edition_id')) {
+            return null;
+        }
+
+        $request = \Yii::$app->request;
+        $edition = $request->getEdition();
+
+        $this->owner->edition_id = $edition->edition_id;
     }
 }

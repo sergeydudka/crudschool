@@ -34,9 +34,9 @@ class BaseApiController extends ActiveController {
      */
     public function getEdition() {
         /**
-         * @var Request $request;
+         * @var Request $request ;
          */
-        $request =  \Yii::$app->request;
+        $request = \Yii::$app->request;
         return $request->getEdition();
     }
 
@@ -90,10 +90,30 @@ class BaseApiController extends ActiveController {
         }
 
         return Yii::createObject([
-            'class'      => ActiveDataProvider::className(),
-            'query'      => $query,
+            'class' => ActiveDataProvider::className(),
+            'query' => $query,
             'pagination' => ['params' => $requestParams],
-            'sort'       => ['params' => $requestParams],
+            'sort' => ['params' => $requestParams],
         ]);
+    }
+
+    protected function verbs() {
+        return [
+            'index' => ['GET', 'HEAD', 'OPTIONS'],
+            'view' => ['GET', 'HEAD', 'OPTIONS'],
+            'create' => ['POST', 'OPTIONS'],
+            'update' => ['POST', 'PUT', 'PATCH', 'OPTIONS'],
+            'delete' => ['POST', 'GET', 'DELETE', 'OPTIONS'],
+        ];
+    }
+
+    /*
+     * Return pure result without serializer for all controller actions
+     *
+     * @param mixin $data
+     * @return mixin $data
+     * */
+    protected function serializeData($data) {
+        return $data;
     }
 }

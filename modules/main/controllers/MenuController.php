@@ -13,8 +13,10 @@ use crudschool\api\ApiController;
 use crudschool\common\helpers\AccessHelper;
 use crudschool\common\helpers\ActionHelper;
 use crudschool\common\helpers\ResponseHelper;
+use crudschool\common\helpers\UrlHelper;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
+use yii\rest\ActiveController;
 use yii\web\Controller;
 
 class MenuController extends ApiController {
@@ -60,13 +62,7 @@ class MenuController extends ApiController {
     public function prepareDataProvider() {
         ResponseHelper::setJSONResponseFormat();
 
-        $url = \yii\helpers\Url::base(true);
-
-        $editionUrl = \Yii::$app->request->getEditionUrl();
-        if ($editionUrl) {
-            $url = trim(strtr($url, ["/$editionUrl" => '/']), '/');
-        }
-        $this->basePath = $url;
+        $this->basePath = UrlHelper::getBasePath();
 
         $result = [];
         foreach (\Yii::$app->getModules() as $id => $module) {
@@ -103,8 +99,9 @@ class MenuController extends ApiController {
         }
 
         $result['label'] = \Yii::t('app', $module->id);
-        $result['url'] = $this->basePath . '/' . $module->id;
-        $result['default'] = $result['url'] . '/' . $module->defaultRoute;
+        $result['url'] = '/' . $module->id;
+        $result['moduleUrl'] = '/' . $module->id;
+        $result['default'] = $result['moduleUrl'] . '/' . $module->defaultRoute;
         $result['defaultRoute'] = $module->defaultRoute;
         $result['list'] = [];
 
@@ -124,40 +121,36 @@ class MenuController extends ApiController {
             $class = $controllerNamespace . '\\' . $fileInfo['filename'];
 
             $controller = new $class($fileInfo['filename'], $module->id);
-            $url = $this->basePath . '/' . $module->id . '/' . $name;
+            $url = $result['moduleUrl'] . '/' . $name;
             $result['list'][$name] = [
                 'url'        => $url,
                 'label'      => \Yii::t('app', $name),
                 'primaryKey' => $this->getPrimaryKey($controller),
                 'model'      => $controller->modelClass,
-                'actions'    => [
-                    'index'  => [
+                'actions'    => $this->getActions($controller),
+                    /*'index'  => [
                         'url'    => $url . ActionHelper::INDEX_ACTION_URL,
-                        //'access' => AccessHelper::getActionAccess($controller->modelClass,
-                        //  ActionHelper::INDEX_ACTION_URL),
-                        'access' => true,
+                        'access' => AccessHelper::getActionAccess($controller->modelClass,
+                          ActionHelper::INDEX_ACTION_URL),
                     ],
                     'view'   => [
                         'url'    => $url . ActionHelper::VIEW_ACTION_URL,
-                        /*'access' => AccessHelper::getActionAccess($controller->modelClass, ActionHelper::VIEW_ACTION_URL),*/
+                        'access' => AccessHelper::getActionAccess($controller->modelClass,
+                            ActionHelper::VIEW_ACTION_URL),
                         'access' => true,
                     ],
                     'create' => [
                         'url'    => $url . ActionHelper::CREATE_ACTION_URL,
-                        /*'access' => AccessHelper::getActionAccess($controller->modelClass, ActionHelper::CREATE_ACTION_URL),*/
-                        'access' => true,
+                        'access' => AccessHelper::getActionAccess($controller->modelClass, ActionHelper::CREATE_ACTION_URL),
                     ],
                     'update' => [
                         'url'    => $url . ActionHelper::UPDATE_ACTION_URL,
-                        /*'access' => AccessHelper::getActionAccess($controller->modelClass, ActionHelper::UPDATE_ACTION_URL),*/
-                        'access' => true,
+                        'access' => AccessHelper::getActionAccess($controller->modelClass, ActionHelper::UPDATE_ACTION_URL),
                     ],
                     'delete' => [
                         'url'    => $url . ActionHelper::DELETE_ACTION_URL,
-                        /*'access' => AccessHelper::getActionAccess($controller->modelClass, ActionHelper::DELETE_ACTION_URL),*/
-                        'access' => true,
-                    ],
-                ],
+                        'access' => AccessHelper::getActionAccess($controller->modelClass, ActionHelper::DELETE_ACTION_URL),
+                    ],*/
             ];
         }
         return $result;
@@ -176,5 +169,28 @@ class MenuController extends ApiController {
         /* @var ActiveRecord $model */
         $model = new $controller->modelClass();
         return (string)key($model->getPrimaryKey(true));
+    }
+
+    private function getActions(ActiveController $controller) {
+        $result = [];
+
+        $actionNames = array_keys($controller->actions());
+        
+        $controllerName = Inflector::camel2id(str_replace('Controller', '', basename(get_class($controller))));
+
+        foreach ($actionNames as $actionName) {
+            $url = ActionHelper::getActionUrl($actionName);
+            if ($url === 'options') {
+                continue;
+            }
+
+            $result[$actionName] = [
+                'url'    => '/' . $controller->module . '/' . $controllerName . '/' . $url,
+                'access' => AccessHelper::getActionAccess($controller->modelClass, $url),
+                'method' => $controller->verbs()[$url] ?? ['GET'],
+            ];
+        }
+
+        return $result;
     }
 }

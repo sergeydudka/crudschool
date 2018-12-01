@@ -10,10 +10,16 @@ namespace crudschool\common\helpers;
 
 
 class ResponseHelper {
-  /**
-   *
-   */
-  public static function setJSONResponseFormat() {
-    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-  }
+
+    public static function setJSONResponseFormat() {
+        self::getResponse()->format = \yii\web\Response::FORMAT_JSON;
+    }
+
+    public static function setHTMLResponseFormat() {
+        self::getResponse()->format = \yii\web\Response::FORMAT_HTML;
+    }
+
+    public static function getResponse() {
+        return \Yii::$app->getResponse();
+    }
 }

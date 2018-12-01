@@ -70,10 +70,6 @@ class Article extends RelationshipModel {
     if ($this->status === null) {
       $this->status = self::STATUS_DEFAULT;
     }
-
-    /*if ($this->edition_id === null) {
-      $this->edition_id = \Yii::$app->edition;
-    }*/
     parent::init();
   }
 

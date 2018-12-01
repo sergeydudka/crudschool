@@ -15,19 +15,6 @@ use yii\filters\VerbFilter;
 class ArticleCategoryController extends ApiController {
 	
 	public $modelClass = 'crudschool\modules\articles\models\ArticleCategory';
-	/**
-	 * {@inheritdoc}
-	 */
-	public function behaviors() {
-		return [
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'delete' => ['POST'],
-				],
-			],
-		];
-	}
 	
 	/**
 	 * Lists all ArticleCategory models.

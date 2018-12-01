@@ -5,7 +5,7 @@ namespace crudschool\modules\editions;
 /**
  * adminmenu module definition class
  */
-class Module extends \yii\base\Module {
+class Module extends \crudschool\api\Module {
 	/**
 	 * {@inheritdoc}
 	 */

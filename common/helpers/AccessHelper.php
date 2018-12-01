@@ -23,8 +23,10 @@ class AccessHelper {
      */
     public static function getAccess() {
         if (self::$access === null) {
-            self::$access = UserAccess::find()->where(['user_group_id' => \Yii::$app->getUser()->getIdentity()
-                ->getGroup()])->all();
+            if (\Yii::$app->getUser()->getIdentity()) {
+                self::$access = UserAccess::find()->where(['user_group_id' => \Yii::$app->getUser()->getIdentity()
+                                                                                        ->getGroup()])->all();
+            }
         }
 
         return self::$access;
@@ -32,15 +34,15 @@ class AccessHelper {
 
 
     /**
-     * @param $modelName
-     * @param $actionName
+     * @param string $modelName
+     * @param string $actionName
      * @return bool
      * @throws \yii\base\InvalidConfigException
      */
     public static function getActionAccess($modelName, $actionName) {
         $access = self::getAccess();
 
-        if (\Yii::$app->getUser()->getIdentity()->isAdmin()) {
+        if (\Yii::$app->getUser()->getIdentity() && \Yii::$app->getUser()->getIdentity()->isAdmin()) {
             return true;
         }
 

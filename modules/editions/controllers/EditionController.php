@@ -15,19 +15,6 @@ use yii\web\UploadedFile;
  */
 class EditionController extends ApiController {
 	public $modelClass = 'crudschool\modules\editions\models\Edition';
-	/**
-	 * {@inheritdoc}
-	 */
-	public function behaviors() {
-		return [
-			'verbs' => [
-				'class' => VerbFilter::class,
-				'actions' => [
-					'delete' => ['POST'],
-				],
-			],
-		];
-	}
 	
 	/**
 	 * Lists all Language models.

@@ -11,6 +11,7 @@ namespace crudschool\api;
 
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
+use yii\web\NotFoundHttpException;
 
 class Result {
     public $list = [];
@@ -18,11 +19,17 @@ class Result {
     public $count = 0;
     public $model;
 
+    private $result;
+
     public function __construct($result) {
+        $this->result = $result;
+
         if ($result instanceof ActiveDataProvider) {
             $this->dataProviderResult($result);
         } elseif($result instanceof ActiveRecord) {
             $this->modelProviderResult($result);
+        } elseif($result instanceof \Exception) {
+            $this->exceptionProviderResult($result);
         } else {
             $this->arrayProviderResult($result);
         }
@@ -57,5 +64,25 @@ class Result {
         $this->total = (is_array($result) || $result instanceof \Countable) ? count($result) : 0;
         $this->count = (is_array($result) || $result instanceof \Countable) ? count($result) : 0;
         $this->model = 'Array';
+    }
+
+    private function exceptionProviderResult(\Exception $result) {
+        $this->list = [
+            'name' => method_exists($result, 'getName') ? $result->getName() : get_class($result),
+            'message' => $result->getMessage(),
+            'code' => $result->getCode(),
+            'status' => $result->statusCode ?? 0,
+            'type' => get_class($result),
+        ];
+        $this->total = 1;
+        $this->count = 1;
+        $this->model = '';
+    }
+
+    public function getErrors() {
+        if ($this->result instanceof \Exception) {
+            return $this->result->getMessage();
+        }
+        return (is_object($this->result) && method_exists($this->result, 'getErrors')) ? $this->result->getErrors() : false;
     }
 }
