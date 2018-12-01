@@ -20,10 +20,10 @@ class Module extends \yii\base\Module {
     }
 
     private function checkAccess($action) {
-        /*$modelClass = \Yii::$app->controller->modelClass;
+        $modelClass = \Yii::$app->controller->modelClass;
         if ($modelClass && !AccessHelper::getActionAccess($modelClass, $action)) {
             throw new ForbiddenHttpException(\Yii::t('app', 'access_denied_for_action'));
-        }*/
+        }
     }
 
 }
