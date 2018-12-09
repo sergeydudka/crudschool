@@ -68,9 +68,9 @@ class AuthController extends ApiController {
      */
     protected function verbs() {
         return [
-            'index' => ['GET', 'HEAD'],
-            'login' => ['GET', 'POST', 'PUT', 'PATCH'],
-            'logout' => ['POST', 'GET'],
+            'index' => ['GET', 'HEAD', 'OPTIONS'],
+            'login' => ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS'],
+            'logout' => ['POST', 'GET', 'OPTIONS'],
         ];
     }
 }

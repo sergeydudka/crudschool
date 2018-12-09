@@ -16,7 +16,8 @@ use function GuzzleHttp\Psr7\mimetype_from_extension;
 use yii\base\InvalidConfigException;
 use yii\web\Response;
 
-class Request extends \yii\web\Request {
+class Request extends \yii\web\Request 
+{
     private $pathInfo = '';
     private $parsedUrl = '';
     private $config = [];
